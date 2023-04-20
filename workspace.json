@@ -1,5 +1,13 @@
 {
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
-  "projects": {}
+  "projects": {
+    "clients": "libs/clients",
+    "common": "libs/common",
+    "entities": "libs/entities",
+    "gateway": "apps/gateway",
+    "mailer": "apps/mailer",
+    "projects": "apps/projects",
+    "user": "apps/user"
+  }
 }

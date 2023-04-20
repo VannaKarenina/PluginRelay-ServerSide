@@ -14,7 +14,18 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@mmh/clients": ["libs/clients/src/index.ts"],
+      "@mmh/clients/*": ["libs/clients/src/*"],
+      "@mmh/common": ["libs/common/src/index.ts"],
+      "@mmh/common/*": ["libs/common/src/*"],
+      "@mmh/gateway": ["apps/gateway/src/index.ts"],
+      "@mmh/gateway/*": ["apps/gateway/src/*"],
+      "@mmh/mailer": ["apps/mailer/src/index.ts"],
+      "@mmh/mailer/*": ["apps/mailer/src/*"],
+      "@mmh/entities": ["libs/entities/src/index.ts"],
+      "@mmh/entities/*": ["libs/entities/src/*"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
