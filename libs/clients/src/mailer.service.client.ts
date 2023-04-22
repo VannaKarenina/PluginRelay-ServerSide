@@ -9,19 +9,18 @@ export class MailerServiceClient extends BaseServiceClient {
     super(broker);
   }
 
-  uploadFile(ctx: {
-    key: string,
-    file: object
-  }) {
-    return this.call('uploadFile', ctx)
-  }
-
   sendVerificationCode(ctx: {
     email: string,
-    login: string,
     code: number
   }) {
     return this.call('sendEmailConfirmCode', ctx);
+  }
+
+  sendRecoveryCode(ctx:{
+    email: string,
+    code: number
+  }) {
+    return this.call('sendEmailRecoveryCode', ctx);
   }
 
 }

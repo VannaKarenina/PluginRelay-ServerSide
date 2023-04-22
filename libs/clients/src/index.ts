@@ -1,2 +1,2 @@
 export * from './base'
-export * from './mailer'
+export * from './mailer.service.client'
