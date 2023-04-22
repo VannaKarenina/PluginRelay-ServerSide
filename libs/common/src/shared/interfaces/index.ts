@@ -1,2 +1,5 @@
 export * from './INewAccount.interface'
 export * from './IOrmAccount.interface'
+export * from './IAccountVerification.interface'
+export * from './IAccountPasswordRecovery.interface'
+export * from './IAccountNewPassword.interface'
