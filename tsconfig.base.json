@@ -24,8 +24,14 @@
       "@mmh/mailer": ["apps/mailer/src/index.ts"],
       "@mmh/mailer/*": ["apps/mailer/src/*"],
       "@mmh/entities": ["libs/entities/src/index.ts"],
-      "@mmh/entities/*": ["libs/entities/src/*"]
+      "@mmh/entities/*": ["libs/entities/src/*"],
+      "@mmh/user": ["apps/user/src/index.ts"],
+      "@mmh/user/*": ["apps/user/src/*"]
+
     }
   },
+  "include": [
+    "libs/**/*"
+  ],
   "exclude": ["node_modules", "tmp"]
 }
