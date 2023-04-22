@@ -11,7 +11,7 @@ export class initial_plugin_relay extends Migration {
       table.string('login');
       table.string('email');
       table.string('password');
-      table.string('status').defaultTo('pending');
+      table.integer('status').defaultTo(0);
       table.string('avatar').nullable();
       table.integer('moderation_level').defaultTo(0)
     })
@@ -61,6 +61,15 @@ export class initial_plugin_relay extends Migration {
       table.string('tag');
     })
 
+  }
+
+  async down(): Promise<void> {
+    const knex = this.ctx ?? this.driver.getConnection("write").getKnex();
+    await knex.schema.dropTableIfExists('projects_tags').options({force: true});
+    await knex.schema.dropTableIfExists('projects_versions').options({force: true});
+    await knex.schema.dropTableIfExists('projects_scores').options({force: true});
+    await knex.schema.dropTableIfExists('projects').options({force: true});
+    await knex.schema.dropTableIfExists('accounts').options({force: true});
   }
 
 }
