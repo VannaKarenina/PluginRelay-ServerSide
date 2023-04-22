@@ -24,9 +24,6 @@ export default class MailerMoleculerController extends Service {
       email: {
         type: 'string'
       },
-      login: {
-        type: 'string'
-      },
       code: {
         type: 'number'
       }
@@ -34,6 +31,20 @@ export default class MailerMoleculerController extends Service {
   })
   async sendEmailConfirmCode(ctx: Context<ISendEmailConfirmCodeInterface>) {
     return this.mailerService.sendEmailConfirmCode(ctx.params);
+  }
+
+  @Action({
+    params: {
+      email: {
+        type: 'string'
+      },
+      code: {
+        type: 'string'
+      }
+    }
+  })
+  async sendEmailRecoveryCode(ctx: Context<ISendEmailConfirmCodeInterface>) {
+    return this.mailerService.sendAccountRecoveryCode(ctx.params);
   }
 
 }
