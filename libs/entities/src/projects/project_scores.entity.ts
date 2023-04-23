@@ -27,7 +27,7 @@ export class ProjectsScoresEntity {
   project: ProjectsEntity
 
   @OneToOne(() => AccountEntity)
-  account!: AccountEntity;
+  account: AccountEntity;
 
 
 }

@@ -33,10 +33,10 @@ export class ProjectsEntity {
   @Expose()
   downloads: string;
 
-  @OneToMany('ProjectsScoresEntity', 'projects', {
+  @OneToMany('ProjectsScoresEntity', 'project', {
     orphanRemoval: true,
     strategy: LoadStrategy.JOINED,
-    mappedBy: 'projects',
+    mappedBy: 'project',
   })
   @Expose({groups: ['list']})
   @Transform(
