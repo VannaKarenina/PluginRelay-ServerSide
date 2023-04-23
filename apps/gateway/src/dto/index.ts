@@ -1,1 +1,1 @@
-export * from './NewAccount.dto'
+export * from './user-app'
