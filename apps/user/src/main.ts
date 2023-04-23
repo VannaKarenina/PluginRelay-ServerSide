@@ -5,11 +5,11 @@ import {USER_SERVICE_NAME} from "./constants";
 import {init} from "./database/mikro-orm";
 
 async function bootstrap() {
+  await init();
+
   const broker = new ServiceBroker(brokerConfig);
 
   new UserMoleculerController(broker);
-
-  init();
 
   broker.createService({
     name: USER_SERVICE_NAME,
@@ -17,7 +17,6 @@ async function bootstrap() {
 
   await broker.start();
 }
-
 bootstrap();
 
 

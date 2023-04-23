@@ -1,5 +1,6 @@
 import {Redis} from "ioredis";
 import {
+  IAccountChangeAvatar, IAccountLoginByCredentials,
   IAccountNewPassword,
   IAccountPasswordRecovery,
   IAccountVerification,
@@ -20,12 +21,14 @@ import MoleculerServerError = Moleculer.Errors.MoleculerServerError;
 
 export default class UserService {
 
-  private em: EntityManager;
+  private initEm: EntityManager;
+  private em;
   private redisInstance: Redis;
   private emailServiceClient: MailerServiceClient;
 
   constructor(broker) {
-    this.em = orm.em.fork() as EntityManager;
+    this.initEm = orm.em as EntityManager;
+    this.em = this.initEm.fork();
     this.emailServiceClient = new MailerServiceClient(broker);
     this.redisInstance = new Redis(redisUrl)
   }
@@ -79,6 +82,8 @@ export default class UserService {
     account.status = AccountStatus.Active;
 
     await this.em.flush();
+
+    return true;
   }
 
   async accountPasswordRecovery(loginOrEmail: string) {
@@ -151,6 +156,38 @@ export default class UserService {
 
     return true;
 
+  }
+
+  async accountChangeAvatar(ctx: IAccountChangeAvatar) {
+
+    const {accountId, avatarUrl} = ctx;
+
+    const account = await this.em.getRepository(AccountEntity).findOne({
+      id: accountId
+    })
+
+    account.avatar = avatarUrl;
+
+    await this.em.flush();
+
+    return true;
+
+  }
+
+  async accountLoginByCredentials(ctx: IAccountLoginByCredentials) {
+
+    const {loginOrEmail, password} = ctx;
+
+    const account = await this.em
+      .createQueryBuilder(AccountEntity, 'account')
+      .leftJoinAndSelect('account.projects', 'projects')
+      .where({
+        [expr('lower(login)')]: loginOrEmail.toLowerCase(),
+      })
+      .orWhere({ [expr('lower(email)')]: loginOrEmail.toLowerCase() })
+      .getSingleResult();
+
+    return password ? bcrypt.compareSync(password, account.password) ? account : null : account;
   }
 
 }
