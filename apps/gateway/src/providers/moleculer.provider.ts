@@ -1,22 +1,21 @@
-import { Injectable, OnApplicationBootstrap } from "@nestjs/common";
+import {Global, Injectable, OnApplicationBootstrap, OnModuleInit} from "@nestjs/common";
 import { ServiceBroker } from "moleculer";
-import {brokerConfig} from "../configs/moleculer.config";
+import {brokerConfig} from "@mmh/gateway";
 
-@Injectable()
-export class MoleculerProvider {
+@Global()
+export class MoleculerProvider  {
+
   private broker: ServiceBroker;
 
   constructor() {
-    this.init();
-  }
-
-  async init() {
     this.broker = new ServiceBroker(brokerConfig);
-
-    await this.broker.start();
+    this.broker.start();
   }
 
   getBroker(): ServiceBroker {
+    if (!this.broker) {
+      throw new Error('Broker is not initialized');
+    }
     return this.broker;
   }
 }
