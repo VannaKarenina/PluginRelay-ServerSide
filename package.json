@@ -18,6 +18,7 @@
     "@mikro-orm/sql-highlighter": "^1.0.1",
     "@nestjs/common": "^9.4.0",
     "@nestjs/core": "^9.4.0",
+    "@nestjs/microservices": "^9.4.0",
     "@nestjs/platform-express": "^9.4.0",
     "@nestjs/platform-fastify": "^9.4.0",
     "aws-sdk": "^2.1353.0",
