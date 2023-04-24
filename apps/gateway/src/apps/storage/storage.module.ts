@@ -1,11 +1,12 @@
 import {Module} from "@nestjs/common";
 import {StorageController} from "./storage.controller";
 import {StorageService} from "./storage.service";
-import {MoleculerProvider} from "../../providers/moleculer.provider";
+import {SharedMoleculerModule} from "@mmh/gateway/shared/SharedMoleculer.module";
 
 @Module({
   controllers: [StorageController],
   exports: [StorageService],
-  providers: [StorageService, MoleculerProvider],
+  providers: [StorageService],
+  imports: [SharedMoleculerModule]
 })
 export class StorageModule{}
