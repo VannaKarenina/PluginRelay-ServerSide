@@ -1,10 +1,14 @@
-import {Module} from '@nestjs/common';
-import {TestModule} from "@mmh/gateway/apps/test";
-import {UserModule} from "@mmh/gateway/apps/user/user.module";
-@Module({
-  imports: [
-    TestModule,
-    UserModule
-  ]
-})
-export class AppModule {}
+  import {Global, Module} from '@nestjs/common';
+  import {UserModule} from "@mmh/gateway/apps/user/user.module";
+  import {StorageModule} from "@mmh/gateway/apps/storage";
+  import {MoleculerProvider} from "@mmh/gateway/providers";
+  import {SharedMoleculerModule} from "@mmh/gateway/shared/SharedMoleculer.module";
+  @Module({
+    imports: [
+      UserModule,
+      StorageModule,
+      SharedMoleculerModule
+    ],
+  })
+  export class AppModule {
+  }
