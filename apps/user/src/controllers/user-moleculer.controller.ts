@@ -37,8 +37,8 @@ export default class UserMoleculerController extends Service {
       password: 'string'
     }
   })
-  async createAccount(ctx: INewAccount) {
-    return this.userService.createAccount(ctx);
+  async createAccount(ctx: Context<INewAccount>) {
+    return this.userService.createAccount(ctx.params);
   }
 
   @Action({
@@ -51,8 +51,8 @@ export default class UserMoleculerController extends Service {
       }
     }
   })
-  async accountCreationVerification(ctx: IAccountVerification) {
-    return this.userService.accountCreationVerification(ctx);
+  async accountCreationVerification(ctx: Context<IAccountVerification>) {
+    return this.userService.accountCreationVerification(ctx.params);
   }
 
   @Action({
