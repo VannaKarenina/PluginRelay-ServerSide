@@ -1,10 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import {ValidationPipe} from "@nestjs/common";
 import LoggerModification from "@mmh/gateway/modifications/Logger.modification";
 import {NestExpressApplication} from "@nestjs/platform-express";
-
 const {GATEWAY_PORT, GATEWAY_PREFIX} = process.env;
 
 async function bootstrap() {
