@@ -1,4 +1,4 @@
-import {IsString, IsNotEmpty} from 'class-validator';
+import {IsString, IsNotEmpty, IsNumber} from 'class-validator';
 
 export class AccountVerificationDto {
 
@@ -6,7 +6,7 @@ export class AccountVerificationDto {
   @IsNotEmpty()
   email: string;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   code: number;
 
