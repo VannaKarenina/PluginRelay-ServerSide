@@ -43,12 +43,19 @@ export default class MailerService {
       </mjml>`
     )
 
-    return await mailTransporter.sendMail({
-      from: `"Noreply" ${NODEMAILER_SENDER}`,
-      to: email,
-      subject: 'PluginRelay Account verification',
-      html: mjmlMessage.html
-    })
+    try {
+      mailTransporter.sendMail({
+        from: `"Noreply" ${NODEMAILER_SENDER}`,
+        to: email,
+        subject: 'PluginRelay Account verification',
+        html: mjmlMessage.html
+      })
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+
+    return true;
   }
 
   async sendAccountRecoveryCode(ctx: ISendEmailConfirmCodeInterface) {
