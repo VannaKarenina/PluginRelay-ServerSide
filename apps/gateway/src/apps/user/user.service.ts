@@ -7,8 +7,10 @@ import {
 } from "@mmh/common";
 import {ServiceBroker} from "moleculer";
 import {UserServiceClient} from "@mmh/clients";
+import {forwardRef, Inject, Injectable} from "@nestjs/common";
 import {MoleculerProvider} from "@mmh/gateway/providers";
 
+@Injectable()
 export class UserService {
 
   protected broker: ServiceBroker;
