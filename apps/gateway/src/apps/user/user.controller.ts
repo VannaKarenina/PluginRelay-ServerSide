@@ -23,4 +23,9 @@ export class UserController {
     return this.service.createAccountVerification(payload);
   }
 
+  @Post('recovery')
+  async passwordRecovery() {
+
+  }
+
 }

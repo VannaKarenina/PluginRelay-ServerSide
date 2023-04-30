@@ -36,12 +36,12 @@ export class UserService {
     return this.userServiceClient.accountPasswordRecovery(loginOrEmail);
   }
 
-  async accountConfirmRecovery(ctx: IAccountPasswordRecovery) {
-    return  this.userServiceClient.accountRecoveryConfirm(ctx);
+  async accountConfirmRecovery(payload: IAccountPasswordRecovery) {
+    return  this.userServiceClient.accountRecoveryConfirm(payload);
   }
 
-  async accountChangePassword(ctx: IAccountNewPassword) {
-    return this.userServiceClient.accountPasswordChange(ctx);
+  async accountChangePassword(payload: IAccountNewPassword) {
+    return this.userServiceClient.accountPasswordChange(payload);
   }
 
   async accountAvatarChange(ctx: IAccountChangeAvatar) {
