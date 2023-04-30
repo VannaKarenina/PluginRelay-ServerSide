@@ -72,8 +72,8 @@ export default class UserMoleculerController extends Service {
       type: 'number'
     }
   })
-  async accountRecoveryConfirm(ctx: IAccountPasswordRecovery) {
-    return this.userService.accountConfirmRecovery(ctx);
+  async accountRecoveryConfirm(ctx: Context<IAccountPasswordRecovery>) {
+    return this.userService.accountConfirmRecovery(ctx.params);
   }
 
   @Action({
@@ -84,8 +84,8 @@ export default class UserMoleculerController extends Service {
       type: 'string'
     }
   })
-  async accountPasswordChange(ctx: IAccountNewPassword) {
-    return this.userService.accountPasswordChange(ctx);
+  async accountPasswordChange(ctx: Context<IAccountNewPassword>) {
+    return this.userService.accountPasswordChange(ctx.params);
   }
 
   @Action({
@@ -96,8 +96,8 @@ export default class UserMoleculerController extends Service {
       type: 'string'
     }
   })
-  async accountChangeAvatar(ctx: IAccountChangeAvatar) {
-    return this.userService.accountChangeAvatar(ctx);
+  async accountChangeAvatar(ctx: Context<IAccountChangeAvatar>) {
+    return this.userService.accountChangeAvatar(ctx.params);
   }
 
   @Action({
@@ -108,8 +108,8 @@ export default class UserMoleculerController extends Service {
       type: 'string'
     }
   })
-  async accountLoginByLOR(ctx: IAccountLoginByCredentials) {
-    return this.userService.accountLoginByCredentials(ctx);
+  async accountLoginByLOR(ctx: Context<IAccountLoginByCredentials>) {
+    return this.userService.accountLoginByCredentials(ctx.params);
   }
 
 
