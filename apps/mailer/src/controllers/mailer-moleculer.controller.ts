@@ -39,7 +39,7 @@ export default class MailerMoleculerController extends Service {
         type: 'string'
       },
       code: {
-        type: 'string'
+        type: 'number'
       }
     }
   })

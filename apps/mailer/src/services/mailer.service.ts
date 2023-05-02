@@ -10,7 +10,7 @@ export default class MailerService {
 
   async sendEmailConfirmCode(ctx: ISendEmailConfirmCodeInterface) {
 
-    const {code, email, login} = ctx;
+    const {code, email} = ctx;
 
     const mjmlMessage = mjml(
       `<mjml>
@@ -59,7 +59,7 @@ export default class MailerService {
   }
 
   async sendAccountRecoveryCode(ctx: ISendEmailConfirmCodeInterface) {
-    const {code, email, login} = ctx;
+    const {code, email} = ctx;
 
     const mjmlMessage = mjml(
       `<mjml>
