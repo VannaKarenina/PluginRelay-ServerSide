@@ -1,7 +1,9 @@
 import {
-  IAccountChangeAvatar, IAccountLoginByCredentials,
-  IAccountNewPassword,
-  IAccountPasswordRecovery,
+  IAccountChangeAvatar,
+  IAccountLoginByCredentials,
+  IAccountPasswordChange,
+  IAccountRecoveryConfirm,
+  IAccountRecoveryInit,
   IAccountVerification,
   INewAccount
 } from "@mmh/common";
@@ -29,18 +31,18 @@ export class UserService {
   }
 
   async createAccountVerification(payload: IAccountVerification) {
-    return this.userServiceClient.accountCreationVerification(payload);
+    return this.userServiceClient.accountVerification(payload);
   }
 
-  async accountRecoveryPassword(loginOrEmail: string) {
-    return this.userServiceClient.accountPasswordRecovery(loginOrEmail);
+  async accountRecoveryInit(payload: IAccountRecoveryInit) {
+    return this.userServiceClient.accountRecoveryInit(payload);
   }
 
-  async accountConfirmRecovery(payload: IAccountPasswordRecovery) {
+  async accountConfirmRecovery(payload: IAccountRecoveryConfirm) {
     return  this.userServiceClient.accountRecoveryConfirm(payload);
   }
 
-  async accountChangePassword(payload: IAccountNewPassword) {
+  async accountChangePassword(payload: IAccountPasswordChange) {
     return this.userServiceClient.accountPasswordChange(payload);
   }
 

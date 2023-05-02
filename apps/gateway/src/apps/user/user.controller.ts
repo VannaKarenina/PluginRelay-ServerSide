@@ -1,6 +1,12 @@
 import {Body, Controller, Post} from "@nestjs/common";
 import {UserService} from "@mmh/gateway/apps/user/user.service";
-import {AccountVerificationDto, NewAccountDto} from "@mmh/gateway/dto";
+import {
+  AccountChangePasswordDto,
+  AccountRecoveryConfirmDto,
+  AccountRecoveryInitDto,
+  AccountVerificationDto,
+  NewAccountDto
+} from "@mmh/gateway/dto";
 
 @Controller({
   path: 'account'
@@ -24,8 +30,24 @@ export class UserController {
   }
 
   @Post('recovery')
-  async passwordRecovery() {
+  async passwordRecovery(
+    @Body() payload: AccountRecoveryInitDto
+  ) {
+    return this.service.accountRecoveryInit(payload);
+  }
 
+  @Post('recoveryConfirm')
+  async passwordRecoveryConfirm(
+    @Body() payload: AccountRecoveryConfirmDto
+  ) {
+    return this.service.accountConfirmRecovery(payload);
+  }
+
+  @Post('changePassword')
+  async passwordRecoveryChange(
+    @Body() payload: AccountChangePasswordDto
+  ) {
+    return this.service.accountChangePassword(payload);
   }
 
 }
