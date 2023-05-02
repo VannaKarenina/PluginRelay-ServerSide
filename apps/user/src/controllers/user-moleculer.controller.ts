@@ -4,11 +4,12 @@ import {Action} from 'moleculer-decorators';
 
 import UserService from "../services/user.service";
 import {USER_SERVICE_NAME} from "../constants";
-import {Redis} from "ioredis";
 import {
-  IAccountChangeAvatar, IAccountLoginByCredentials,
-  IAccountNewPassword,
-  IAccountPasswordRecovery,
+  IAccountChangeAvatar,
+  IAccountLoginByCredentials,
+  IAccountPasswordChange,
+  IAccountRecoveryConfirm,
+  IAccountRecoveryInit,
   IAccountVerification,
   INewAccount
 } from "@mmh/common";
@@ -51,8 +52,8 @@ export default class UserMoleculerController extends Service {
       }
     }
   })
-  async accountCreationVerification(ctx: Context<IAccountVerification>) {
-    return this.userService.accountCreationVerification(ctx.params);
+  async accountVerification(ctx: Context<IAccountVerification>) {
+    return this.userService.accountVerification(ctx.params);
   }
 
   @Action({
@@ -60,8 +61,8 @@ export default class UserMoleculerController extends Service {
       type: 'string'
     }
   })
-  async accountPasswordRecovery(loginOrEmail: string) {
-    return this.userService.accountPasswordRecovery(loginOrEmail);
+  async accountRecoveryInit(ctx: Context<IAccountRecoveryInit>) {
+    return this.userService.accountRecoveryInit(ctx.params);
   }
 
   @Action({
@@ -72,19 +73,22 @@ export default class UserMoleculerController extends Service {
       type: 'number'
     }
   })
-  async accountRecoveryConfirm(ctx: Context<IAccountPasswordRecovery>) {
-    return this.userService.accountConfirmRecovery(ctx.params);
+  async accountRecoveryConfirm(ctx: Context<IAccountRecoveryConfirm>) {
+    return this.userService.accountRecoveryConfirm(ctx.params);
   }
 
   @Action({
     loginOrEmail: {
       type: 'string'
     },
+    signature: {
+      type: 'string'
+    },
     password: {
       type: 'string'
     }
   })
-  async accountPasswordChange(ctx: Context<IAccountNewPassword>) {
+  async accountPasswordChange(ctx: Context<IAccountPasswordChange>) {
     return this.userService.accountPasswordChange(ctx.params);
   }
 

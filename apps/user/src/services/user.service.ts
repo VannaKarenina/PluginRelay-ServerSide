@@ -1,8 +1,10 @@
 import {Redis} from "ioredis";
 import {
-  IAccountChangeAvatar, IAccountLoginByCredentials,
-  IAccountNewPassword,
-  IAccountPasswordRecovery,
+  IAccountChangeAvatar,
+  IAccountLoginByCredentials,
+  IAccountPasswordChange,
+  IAccountRecoveryConfirm,
+  IAccountRecoveryInit,
   IAccountVerification,
   INewAccount
 } from "@mmh/common/shared/interfaces";
@@ -65,7 +67,7 @@ export default class UserService {
 
   }
 
-  async accountCreationVerification(ctx: IAccountVerification) {
+  async accountVerification(ctx: IAccountVerification) {
 
     const account = await this.em.getRepository(AccountEntity).findOne({
       email: ctx.email
@@ -86,7 +88,9 @@ export default class UserService {
     return true;
   }
 
-  async accountPasswordRecovery(loginOrEmail: string) {
+  async accountRecoveryInit(ctx: IAccountRecoveryInit) {
+
+    const {loginOrEmail} = ctx;
 
     const account = await this.em
       .createQueryBuilder(AccountEntity)
@@ -98,8 +102,8 @@ export default class UserService {
 
     if (!account) throw new MoleculerClientError('Account with this login/email not found', 400);
 
-    if (account.status == AccountStatus.Active || account.status == AccountStatus.Suspended)
-      throw new MoleculerClientError('This account currently suspended or not verify email', 400);
+    if (account.status == AccountStatus.Pending || account.status == AccountStatus.Suspended)
+      throw new MoleculerClientError('This account currently suspended or not verified email', 400);
 
     account.status = AccountStatus.RecoveryInit;
 
@@ -107,13 +111,17 @@ export default class UserService {
 
     this.redisInstance.set(account.email, code);
 
-    await this.emailServiceClient.sendRecoveryCode({email: account.email, code});
+    try {
+      await this.emailServiceClient.sendRecoveryCode({email: account.email, code: code});
+    } catch (Error: any) {
+      if (Error) throw new MoleculerServerError(`Something went wrong while sending verification message: \n ${Error}`, 400);
+    }
 
     return true;
 
   }
 
-  async accountConfirmRecovery(ctx: IAccountPasswordRecovery) {
+  async accountRecoveryConfirm(ctx: IAccountRecoveryConfirm) {
 
     const {loginOrEmail, code} = ctx;
 
@@ -130,17 +138,23 @@ export default class UserService {
 
     account.status = AccountStatus.RecoveryConfirmed;
 
+    const signature = verificationCodeGenerator(100000, 999999999999);
+
     await this.redisInstance.del(account.email, code.toString());
+
+    await this.redisInstance.set(account.email, signature.toString());
 
     await this.em.flush();
 
-    return true;
+    return {
+      signature: signature
+    };
 
   }
 
-  async accountPasswordChange(ctx: IAccountNewPassword) {
+  async accountPasswordChange(ctx: IAccountPasswordChange) {
 
-    const {loginOrEmail, password} = ctx;
+    const {signature, password, loginOrEmail} = ctx;
 
     const account = await this.em
       .createQueryBuilder(AccountEntity)
@@ -150,7 +164,14 @@ export default class UserService {
       .orWhere({ [expr('lower(email)')]: loginOrEmail.toLowerCase() })
       .getSingleResult();
 
+    if (await this.redisInstance.get(account.email) != signature.toString())
+      throw new MoleculerClientError("Signature error. Report this to support", 400);
+
+    if (account.status != AccountStatus.RecoveryConfirmed)
+      throw new MoleculerClientError("Account recovery not confirmed", 400)
+
     account.password = bcrypt.hashSync(password, 10);
+    account.status = AccountStatus.Active;
 
     await this.em.flush();
 
