@@ -1,6 +1,6 @@
 import {
   IAccountChangeAvatar,
-  IAccountLoginByCredentials,
+  IAccountLoginWithCredentials,
   IAccountPasswordChange,
   IAccountRecoveryConfirm,
   IAccountRecoveryInit,
@@ -9,8 +9,9 @@ import {
 } from "@mmh/common";
 import {ServiceBroker} from "moleculer";
 import {UserServiceClient} from "@mmh/clients";
-import {forwardRef, Inject, Injectable} from "@nestjs/common";
+import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import {MoleculerProvider} from "@mmh/gateway/providers";
+import {JwtService} from "@nestjs/jwt";
 
 @Injectable()
 export class UserService {
@@ -19,7 +20,8 @@ export class UserService {
   protected userServiceClient: UserServiceClient;
 
   constructor(
-    private readonly moleculerProvider: MoleculerProvider
+    private readonly moleculerProvider: MoleculerProvider,
+    private jwtTokenService: JwtService
   ) {
     this.broker = this.moleculerProvider.getBroker();
     this.userServiceClient = new UserServiceClient(this.broker);
@@ -46,12 +48,21 @@ export class UserService {
     return this.userServiceClient.accountPasswordChange(payload);
   }
 
+  async accountLoginWithCredentials(ctx: IAccountLoginWithCredentials) {
+
+    const account: any = await this.userServiceClient.accountLoginWithCredentials(ctx);
+
+    if (!account) throw new HttpException(
+      'Invalid authorization data LOGIN/PASSWORD',
+      HttpStatus.UNAUTHORIZED,
+    )
+
+    return {
+      access_token: this.jwtTokenService.sign({id: account.id, login: account.login})
+    }
+  }
+
   async accountAvatarChange(ctx: IAccountChangeAvatar) {
     return this.userServiceClient.accountChangeAvatar(ctx);
   }
-
-  async accountLoginByLOR(ctx: IAccountLoginByCredentials) {
-    return this.userServiceClient.accountLoginByLOR(ctx);
-  }
-
 }

@@ -1,19 +1,24 @@
-import {Body, Controller, Post} from "@nestjs/common";
+import {Body, Controller, Get, Post, Request, UseGuards} from "@nestjs/common";
 import {UserService} from "@mmh/gateway/apps/user/user.service";
 import {
-  AccountChangePasswordDto,
+  AccountChangePasswordDto, AccountLoginDto,
   AccountRecoveryConfirmDto,
   AccountRecoveryInitDto,
   AccountVerificationDto,
   NewAccountDto
 } from "@mmh/gateway/dto";
+import {JwtService} from "@nestjs/jwt";
+import {JwtAuthGuard} from "@mmh/gateway/guards/JwtAuth.guard";
 
 @Controller({
   path: 'account'
 })
 export class UserController {
 
-  constructor(private service: UserService) {}
+  constructor(
+    private service: UserService,
+    private jwtTokenService: JwtService
+  ) {}
 
   @Post('create')
   async createAccount(
@@ -48,6 +53,13 @@ export class UserController {
     @Body() payload: AccountChangePasswordDto
   ) {
     return this.service.accountChangePassword(payload);
+  }
+
+  @Post('login')
+  async accountLogin(
+    @Body() payload: AccountLoginDto
+  ) {
+    return this.service.accountLoginWithCredentials(payload);
   }
 
 }
