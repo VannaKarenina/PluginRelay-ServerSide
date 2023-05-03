@@ -6,7 +6,7 @@ import UserService from "../services/user.service";
 import {USER_SERVICE_NAME} from "../constants";
 import {
   IAccountChangeAvatar,
-  IAccountLoginByCredentials,
+  IAccountLoginWithCredentials,
   IAccountPasswordChange,
   IAccountRecoveryConfirm,
   IAccountRecoveryInit,
@@ -112,7 +112,7 @@ export default class UserMoleculerController extends Service {
       type: 'string'
     }
   })
-  async accountLoginByLOR(ctx: Context<IAccountLoginByCredentials>) {
+  async accountLoginWithCredentials(ctx: Context<IAccountLoginWithCredentials>) {
     return this.userService.accountLoginByCredentials(ctx.params);
   }
 

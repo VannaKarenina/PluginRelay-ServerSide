@@ -1,7 +1,7 @@
 import {Redis} from "ioredis";
 import {
   IAccountChangeAvatar,
-  IAccountLoginByCredentials,
+  IAccountLoginWithCredentials,
   IAccountPasswordChange,
   IAccountRecoveryConfirm,
   IAccountRecoveryInit,
@@ -195,7 +195,7 @@ export default class UserService {
 
   }
 
-  async accountLoginByCredentials(ctx: IAccountLoginByCredentials) {
+  async accountLoginByCredentials(ctx: IAccountLoginWithCredentials) {
 
     const {loginOrEmail, password} = ctx;
 
