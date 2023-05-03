@@ -1,4 +1,4 @@
-export interface IAccountLoginByCredentials {
+export interface IAccountLoginWithCredentials {
   loginOrEmail: string,
   password: string
 }
