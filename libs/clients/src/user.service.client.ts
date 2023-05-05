@@ -1,7 +1,7 @@
 import BaseServiceClient from "@mmh/clients/base/base.service.client";
 import {USER_SERVICE_NAME} from "@mmh/user/constants";
 import {
-  IAccountChangeAvatar,
+  IAccountChangeAvatar, IAccountIDInterface,
   IAccountLoginWithCredentials,
   IAccountPasswordChange,
   IAccountRecoveryConfirm,
@@ -38,12 +38,16 @@ export class UserServiceClient extends BaseServiceClient {
     return this.call('accountPasswordChange', ctx);
   }
 
-  async accountChangeAvatar(ctx: IAccountChangeAvatar) {
+  async accountUpdateAvatar(ctx: IAccountChangeAvatar) {
     return this.call('accountChangeAvatar', ctx);
   }
 
   async accountLoginWithCredentials(ctx: IAccountLoginWithCredentials) {
     return this.call('accountLoginWithCredentials', ctx);
+  }
+
+  async getAccountById(ctx: IAccountIDInterface) {
+    return this.call('getAccountById', ctx);
   }
 
 }
