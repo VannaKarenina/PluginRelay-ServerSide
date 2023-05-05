@@ -1,7 +1,19 @@
-import {Body, Controller, Get, Inject, Post, UploadedFile, UseInterceptors} from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Query, Res,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors
+} from "@nestjs/common";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {StorageService} from "@mmh/gateway/apps/storage/storage.service";
 import * as AWS from "aws-sdk";
+import {JwtAuthGuard} from "@mmh/gateway/guards/JwtAuth.guard";
 
 @Controller({
   path: 'storage'
@@ -10,20 +22,19 @@ export class StorageController {
 
   constructor(private service: StorageService) {}
 
-  /*@Post('upload')
+  @UseGuards(JwtAuthGuard)
+  @Post('uploadImage')
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file, @Body('key') key: string) {
-    return  storage.upload({
-      Bucket: 'plugins.storage',
-      Key: key,
-      Body: file.buffer,
-      ContentType: file.mimetype,
-    }).promise();
-  }*/
+  async uploadFile(@UploadedFile() file) {
+    return  this.service.uploadAvatar(file);
+  }
 
-  @Get('test')
-  async test() {
-
+  @Get('getImage')
+  async getImage(
+    @Query() params: any,
+    @Res() res: Response
+  ) {
+    return this.service.getAvatar(params.key, res)
   }
 
 
