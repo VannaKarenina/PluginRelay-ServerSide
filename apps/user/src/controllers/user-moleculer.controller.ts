@@ -5,7 +5,7 @@ import {Action} from 'moleculer-decorators';
 import UserService from "../services/user.service";
 import {USER_SERVICE_NAME} from "../constants";
 import {
-  IAccountChangeAvatar,
+  IAccountChangeAvatar, IAccountIDInterface,
   IAccountLoginWithCredentials,
   IAccountPasswordChange,
   IAccountRecoveryConfirm,
@@ -114,6 +114,15 @@ export default class UserMoleculerController extends Service {
   })
   async accountLoginWithCredentials(ctx: Context<IAccountLoginWithCredentials>) {
     return this.userService.accountLoginByCredentials(ctx.params);
+  }
+
+  @Action({
+    id: {
+      type: 'number'
+    }
+  })
+  async getAccountById(ctx: Context<IAccountIDInterface>) {
+    return this.userService.getAccountById(ctx.params);
   }
 
 

@@ -1,6 +1,6 @@
 import {Redis} from "ioredis";
 import {
-  IAccountChangeAvatar,
+  IAccountChangeAvatar, IAccountIDInterface,
   IAccountLoginWithCredentials,
   IAccountPasswordChange,
   IAccountRecoveryConfirm,
@@ -209,6 +209,18 @@ export default class UserService {
       .getSingleResult();
 
     return password ? bcrypt.compareSync(password, account.password) ? account : null : account;
+  }
+
+  async getAccountById(ctx: IAccountIDInterface) {
+
+    const {id} = ctx;
+
+    const account = await this.em.getRepository(AccountEntity).findOne({id: id});
+
+    if (!account) throw new MoleculerServerError(`No account with this id [${id}]`, 400);
+
+    return account;
+
   }
 
 }
