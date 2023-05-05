@@ -23,7 +23,7 @@
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.4.0",
     "@nestjs/platform-fastify": "^9.4.0",
-    "aws-sdk": "^2.1353.0",
+    "aws-sdk": "^2.1372.0",
     "bcrypt": "^5.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
@@ -37,6 +37,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0",
+    "uuid": "^9.0.0",
     "vue": "^3.2.47",
     "vue-server-renderer": "^2.7.14",
     "winston": "^3.8.2"
