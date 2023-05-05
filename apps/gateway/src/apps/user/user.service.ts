@@ -62,7 +62,7 @@ export class UserService {
     }
   }
 
-  async accountAvatarChange(ctx: IAccountChangeAvatar) {
-    return this.userServiceClient.accountChangeAvatar(ctx);
+  async accountUpdateAvatar(ctx: IAccountChangeAvatar) {
+    return this.userServiceClient.accountUpdateAvatar(ctx);
   }
 }

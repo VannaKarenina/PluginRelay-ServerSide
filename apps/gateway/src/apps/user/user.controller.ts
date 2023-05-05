@@ -1,6 +1,7 @@
 import {Body, Controller, Get, Post, Request, UseGuards} from "@nestjs/common";
 import {UserService} from "@mmh/gateway/apps/user/user.service";
 import {
+  AccountChangeAvatarDto,
   AccountChangePasswordDto, AccountLoginDto,
   AccountRecoveryConfirmDto,
   AccountRecoveryInitDto,
@@ -60,6 +61,15 @@ export class UserController {
     @Body() payload: AccountLoginDto
   ) {
     return this.service.accountLoginWithCredentials(payload);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('changeAvatar')
+  async accountChangeAvatar(
+    @Request() req: any,
+    @Body() payload: AccountChangeAvatarDto
+  ) {
+    return this.service.accountUpdateAvatar({accountId: req.user.accountId, avatarUrl: payload.avatarUrl})
   }
 
 }
