@@ -2,20 +2,78 @@ import {Injectable} from "@nestjs/common";
 import {ServiceBroker} from "moleculer";
 import {s3} from '@mmh/gateway/configs'
 import {v4 as uuidv4} from 'uuid';
+import {MoleculerProvider} from "@mmh/gateway/providers";
+import {UserServiceClient} from "@mmh/clients";
+import {ProjectsServiceClient} from "@mmh/clients/projects.service.client";
 
 @Injectable()
 export class StorageService {
 
   protected broker: ServiceBroker;
+  protected userServiceClient: UserServiceClient;
+  protected projectServiceClient: ProjectsServiceClient;
 
-  async uploadAvatar(file: any) {
+  constructor(
+    private readonly moleculerProvider: MoleculerProvider,
+  ) {
+    this.broker = this.moleculerProvider.getBroker();
+    this.userServiceClient = new UserServiceClient(this.broker);
+    this.projectServiceClient = new ProjectsServiceClient(this.broker);
+  }
+
+  async uploadAvatar(id: number, file: any) {
     const uuid = uuidv4();
-    return s3.upload({
+    const upload = await s3.upload({
       Bucket: 'avatars.storage',
       Key: `${uuid}.${file.originalname.split('.').pop()}`,
       Body: file.buffer,
       ContentType: file.mimetype
     }).promise();
+
+    try {
+      await this.userServiceClient.accountUpdateAvatar({accountId: id, avatarUrl: upload.Key})
+    } catch (e) {
+      if (e) return false;
+    }
+
+    return true;
+  }
+
+  async uploadFavicon(id: number, file: any) {
+    const uuid = uuidv4();
+    const upload = await s3.upload({
+      Bucket: 'projects.fav',
+      Key: `${uuid}.${file.originalname.split('.').pop()}`,
+      Body: file.buffer,
+      ContentType: file.mimetype
+    }).promise();
+
+    try {
+      await this.projectServiceClient.projectFaviconChange({id: id, favicon: upload.Key})
+    } catch (e) {
+      if (e) return false;
+    }
+
+    return true;
+  }
+
+  async uploadPlugin(verid: number, file: any) {
+    const upload = await s3.upload({
+      Bucket: 'plugins.storage',
+      Key: file.originalname,
+      Body: file.buffer,
+      ContentType: file.mimetype
+    }).promise();
+
+    try {
+      await this.projectServiceClient.changeVersionFile({id: verid, fileLocation: upload.Key})
+    } catch (e) {
+      console.log(e);
+      if (e) return false;
+    }
+
+    return true;
+
   }
 
   async getAvatar(key: any, res: any) {

@@ -8,7 +8,8 @@ import {
   Query, Res,
   UploadedFile,
   UseGuards,
-  UseInterceptors
+  UseInterceptors,
+  Request
 } from "@nestjs/common";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {StorageService} from "@mmh/gateway/apps/storage/storage.service";
@@ -23,10 +24,32 @@ export class StorageController {
   constructor(private service: StorageService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post('uploadImage')
+  @Post('uploadAccountImage')
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file) {
-    return  this.service.uploadAvatar(file);
+  async uploadFile(
+    @Request() req: any,
+    @UploadedFile() file) {
+    return  this.service.uploadAvatar(req.user.id ,file);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('uploadProjectFile')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadProjectFile(
+    @Request() req: any,
+    @Body() payload: any,
+    @UploadedFile() file) {
+    return  this.service.uploadPlugin(parseInt(payload.id) ,file);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('uploadProjectFavicon')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadProjectFavicon(
+    @Request() req: any,
+    @Body() payload: any,
+    @UploadedFile() file) {
+    return  this.service.uploadFavicon(parseInt(payload.id) ,file);
   }
 
   @Get('getImage')
