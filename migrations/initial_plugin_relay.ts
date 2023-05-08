@@ -12,8 +12,14 @@ export class initial_plugin_relay extends Migration {
       table.string('email');
       table.string('password');
       table.integer('status').defaultTo(0);
-      table.string('avatar').nullable();
+      table.string('avatar').defaultTo('event2_img.png');
       table.integer('moderation_level').defaultTo(0)
+    })
+
+    await knex.schema.createTable('projects_category', table => {
+      table.increments('id').primary();
+      table.string('name');
+      table.string('description');
     })
 
     await knex.schema.createTable('projects', table => {
@@ -23,7 +29,11 @@ export class initial_plugin_relay extends Migration {
         .inTable('accounts')
         .index();
       table.string('name');
-      table.string('favicon_path');
+      table.integer('category_id')
+        .references('id')
+        .inTable('projects_category')
+        .index();
+      table.string('favicon_path').nullable();
       table.string('description');
       table.integer('downloads').defaultTo(0);
     })
@@ -47,9 +57,10 @@ export class initial_plugin_relay extends Migration {
         .references('id')
         .inTable('projects')
         .index();
+      table.string('name');
       table.string('version');
       table.string('description');
-      table.string('storage_path');
+      table.string('storage');
     })
 
     await knex.schema.createTable('projects_tags', table => {
@@ -69,6 +80,7 @@ export class initial_plugin_relay extends Migration {
     await knex.schema.dropTableIfExists('projects_versions').options({force: true});
     await knex.schema.dropTableIfExists('projects_scores').options({force: true});
     await knex.schema.dropTableIfExists('projects').options({force: true});
+    await knex.schema.dropTableIfExists('projects_category').options({force: true});
     await knex.schema.dropTableIfExists('accounts').options({force: true});
   }
 
