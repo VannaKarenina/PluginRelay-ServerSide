@@ -215,7 +215,7 @@ export default class UserService {
 
     const {id} = ctx;
 
-    const account = await this.em.getRepository(AccountEntity).findOne({id: id});
+    const account = await this.em.getRepository(AccountEntity).findOne({id: id}, {populate: ['projects']});
 
     if (!account) throw new MoleculerServerError(`No account with this id [${id}]`, 400);
 

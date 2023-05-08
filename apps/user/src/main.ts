@@ -1,5 +1,5 @@
 import {ServiceBroker} from 'moleculer';
-import {brokerConfig} from "./configurations";
+import {brokerConfig} from "./configs";
 import UserMoleculerController from "./controllers/user-moleculer.controller"
 import {USER_SERVICE_NAME} from "./constants";
 import {init} from "./database/mikro-orm";

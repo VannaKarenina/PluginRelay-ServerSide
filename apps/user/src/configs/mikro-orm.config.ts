@@ -5,8 +5,11 @@ import {
 } from '@mikro-orm/core';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import {PostgreSqlDriver} from "@mikro-orm/postgresql";
-import {AccountEntity} from "@mmh/entities";
-import {ProjectsEntity} from "@mmh/entities/projects/projects.entity";
+import {AccountEntity,
+        ProjectsEntity,
+        ProjectTagsEntity,
+        ProjectCategoryEntity,
+        ProjectsVersionEntity} from "@mmh/entities";
 
 const { DB_HOST, DB_PORT, DB_PASSWORD, DB_USER, DB_DATABASE } = process.env;
 
@@ -14,7 +17,10 @@ export const MikroOrmConfig: Options = {
   driver: PostgreSqlDriver,
   entities: [
     AccountEntity,
-    ProjectsEntity
+    ProjectsEntity,
+    ProjectTagsEntity,
+    ProjectCategoryEntity,
+    ProjectsVersionEntity
   ],
   dbName: DB_DATABASE,
   host: DB_HOST,
