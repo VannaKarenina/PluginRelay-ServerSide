@@ -1,7 +1,7 @@
 import {Exclude, Expose} from "class-transformer";
 import {Entity, ManyToOne, OneToOne, PrimaryKey, Property} from "@mikro-orm/core";
 import {ProjectsEntity} from "./projects.entity";
-import {AccountEntity} from "../user/account.entitiy";
+import {AccountEntity} from "@mmh/entities";
 
 @Entity({
   tableName: 'projects_scores'
