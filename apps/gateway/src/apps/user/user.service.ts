@@ -5,7 +5,8 @@ import {
   IAccountRecoveryConfirm,
   IAccountRecoveryInit,
   IAccountVerification,
-  INewAccount
+  INewAccount,
+  IAccountIDInterface
 } from "@mmh/common";
 import {ServiceBroker} from "moleculer";
 import {UserServiceClient} from "@mmh/clients";
@@ -64,5 +65,9 @@ export class UserService {
 
   async accountUpdateAvatar(ctx: IAccountChangeAvatar) {
     return this.userServiceClient.accountUpdateAvatar(ctx);
+  }
+
+  async getAccountById(ctx: IAccountIDInterface) {
+    return this.userServiceClient.getAccountById(ctx);
   }
 }

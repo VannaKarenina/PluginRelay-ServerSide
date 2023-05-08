@@ -72,4 +72,12 @@ export class UserController {
     return this.service.accountUpdateAvatar({accountId: req.user.accountId, avatarUrl: payload.avatarUrl})
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('identity')
+  async getAccountById(
+    @Request() req: any
+  ) {
+    return this.service.getAccountById({id: req.user.id});
+  }
+
 }
