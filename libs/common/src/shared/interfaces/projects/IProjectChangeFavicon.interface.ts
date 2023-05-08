@@ -1,1 +1,4 @@
-export interface IProjectChangeFavicon
+export interface IProjectChangeFavicon {
+  id: number;
+  favicon: string;
+}
