@@ -20,6 +20,7 @@ export class initial_plugin_relay extends Migration {
       table.increments('id').primary();
       table.string('name');
       table.string('description');
+      table.string('image');
     })
 
     await knex.schema.createTable('projects', table => {
