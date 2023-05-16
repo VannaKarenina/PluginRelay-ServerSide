@@ -7,7 +7,7 @@ import {
   IProjectCreate,
   IProjectDelete,
   IProjectEdit, IProjectGetById,
-  IProjectNewVersion,
+  IProjectNewVersion, IProjectsByCategory,
   IProjectVersionFileAdd
 } from "@mmh/common";
 
@@ -135,6 +135,17 @@ export default class ProjectsMoleculerController extends Service {
   })
   async getProjectById(ctx: Context<IProjectGetById>) {
     return this.projectsService.getProjectById(ctx.params);
+  }
+
+  @Action({
+    params: {
+      cid: {
+        type: "number"
+      }
+    }
+  })
+  async getAllInCategory(ctx: Context<IProjectsByCategory>) {
+    return this.projectsService.getAllProjectsByCategory(ctx.params);
   }
 
 }

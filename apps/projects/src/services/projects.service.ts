@@ -5,7 +5,7 @@ import {
   IProjectCreate,
   IProjectDelete,
   IProjectEdit, IProjectGetById,
-  IProjectNewVersion,
+  IProjectNewVersion, IProjectsByCategory,
   IProjectVersionFileAdd
 } from "@mmh/common";
 import {AccountEntity, ProjectsVersionEntity} from "@mmh/entities";
@@ -163,6 +163,10 @@ export default class ProjectsService {
 
   async getProjectById(ctx: IProjectGetById) {
     return await this.em.getRepository(ProjectsEntity).findOne({id: ctx.id}, {populate: ['versions']})
+  }
+
+  async getAllProjectsByCategory(ctx: IProjectsByCategory) {
+    return await this.em.getRepository(ProjectCategoryEntity).findOne({id: ctx.cid}, {populate: ['projects']});
   }
 
 }
