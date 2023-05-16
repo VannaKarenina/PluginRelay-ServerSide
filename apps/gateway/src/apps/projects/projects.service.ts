@@ -5,7 +5,7 @@ import {
   IProjectDelete,
   IProjectEdit,
   IProjectGetById,
-  IProjectNewVersion
+  IProjectNewVersion, IProjectsByCategory
 } from "@mmh/common";
 import {ServiceBroker} from "moleculer";
 import {ProjectsServiceClient} from "@mmh/clients/projects.service.client";
@@ -42,6 +42,10 @@ export class ProjectsService {
   }
   async addNewVersion(ctx: IProjectNewVersion) {
     return this.projectServiceClient.addNewVer(ctx);
+  }
+
+  async getByCid(ctx: IProjectsByCategory) {
+    return this.projectServiceClient.getAllByCategory(ctx);
   }
 
 }

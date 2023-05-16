@@ -50,4 +50,12 @@ export class ProjectsController {
     return this.service.getProjectById({id: parseInt(pid)});
   }
 
+  @Get("category/:cid")
+  async getByCategory(
+    @Param('cid') cid: string
+  ) {
+    return this.service.getByCid({cid: parseInt(cid)});
+  }
+
+
 }

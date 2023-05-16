@@ -9,7 +9,11 @@ export class MoleculerProvider  {
 
   constructor() {
     this.broker = new ServiceBroker(brokerConfig);
-    this.broker.start();
+    try {
+      this.broker.start();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   getBroker(): ServiceBroker {
