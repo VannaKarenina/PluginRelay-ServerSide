@@ -52,13 +52,30 @@ export class StorageController {
     return  this.service.uploadFavicon(parseInt(payload.id) ,file);
   }
 
-  @Get('getImage')
-  async getImage(
+  @Get('getAccountImage')
+  async getAccountImage(
     @Query() params: any,
     @Res() res: Response
   ) {
-    return this.service.getAvatar(params.key, res)
+    return this.service.getAccountAvatar(params.key, res);
   }
+
+  @Get('getProjectAvatar')
+  async getProjectAvatar(
+    @Query() params: any,
+    @Res() res: Response
+  ) {
+    return this.service.getProjectAvatar(params.key, res);
+  }
+
+  @Get('getCategoryAvatar')
+  async getCategoryAvatar(
+    @Query() params: any,
+    @Res() res: Response
+  ) {
+    return this.service.getCategoryAvatar(params.key, res);
+  }
+
 
 
 }

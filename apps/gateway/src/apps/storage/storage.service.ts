@@ -24,7 +24,7 @@ export class StorageService {
   async uploadAvatar(id: number, file: any) {
     const uuid = uuidv4();
     const upload = await s3.upload({
-      Bucket: 'avatars.storage',
+      Bucket: 'account.avatars',
       Key: `${uuid}.${file.originalname.split('.').pop()}`,
       Body: file.buffer,
       ContentType: file.mimetype
@@ -42,7 +42,7 @@ export class StorageService {
   async uploadFavicon(id: number, file: any) {
     const uuid = uuidv4();
     const upload = await s3.upload({
-      Bucket: 'projects.fav',
+      Bucket: 'project.avatars',
       Key: `${uuid}.${file.originalname.split('.').pop()}`,
       Body: file.buffer,
       ContentType: file.mimetype
@@ -59,7 +59,7 @@ export class StorageService {
 
   async uploadPlugin(verid: number, file: any) {
     const upload = await s3.upload({
-      Bucket: 'plugins.storage',
+      Bucket: 'project.plugins',
       Key: file.originalname,
       Body: file.buffer,
       ContentType: file.mimetype
@@ -76,9 +76,27 @@ export class StorageService {
 
   }
 
-  async getAvatar(key: any, res: any) {
+  async getAccountAvatar(key: any, res: any) {
     const obj = await s3.getObject({
-      Bucket: 'avatars.storage',
+      Bucket: 'account.avatars',
+      Key: key
+    }).createReadStream()
+    res.set('Content-Type', 'image/jpeg');
+    return obj.pipe(res);
+  }
+
+  async getProjectAvatar(key: any, res: any) {
+    const obj = await s3.getObject({
+      Bucket: 'project.avatars',
+      Key: key
+    }).createReadStream()
+    res.set('Content-Type', 'image/jpeg');
+    return obj.pipe(res);
+  }
+
+  async getCategoryAvatar(key: any, res: any) {
+    const obj = await s3.getObject({
+      Bucket: 'category.avatars',
       Key: key
     }).createReadStream()
     res.set('Content-Type', 'image/jpeg');
