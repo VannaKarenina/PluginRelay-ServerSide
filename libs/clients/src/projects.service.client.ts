@@ -5,7 +5,7 @@ import {
   IProjectCreate,
   IProjectDelete,
   IProjectEdit, IProjectGetById,
-  IProjectNewVersion,
+  IProjectNewVersion, IProjectsByCategory,
   IProjectVersionFileAdd
 } from "@mmh/common";
 
@@ -43,6 +43,10 @@ export class ProjectsServiceClient extends BaseServiceClient {
 
   async getProjectById(ctx: IProjectGetById) {
     return this.call('getProjectById', ctx);
+  }
+
+  async getAllByCategory(ctx: IProjectsByCategory) {
+    return this.call('getAllInCategory', ctx);
   }
 
 
