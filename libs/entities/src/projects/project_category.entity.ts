@@ -20,6 +20,10 @@ export class ProjectCategoryEntity {
   @Expose()
   description: string;
 
+  @Property()
+  @Expose()
+  image: string;
+
   @OneToMany('ProjectsEntity', 'category', {
     orphanRemoval: true,
     strategy: LoadStrategy.JOINED,
