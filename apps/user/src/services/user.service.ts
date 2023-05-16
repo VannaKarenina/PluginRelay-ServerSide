@@ -208,6 +208,8 @@ export default class UserService {
       .orWhere({ [expr('lower(email)')]: loginOrEmail.toLowerCase() })
       .getSingleResult();
 
+    if (account.status)
+
     return password ? bcrypt.compareSync(password, account.password) ? account : null : account;
   }
 
