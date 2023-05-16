@@ -19,19 +19,18 @@
       "@mmh/clients/*": ["libs/clients/src/*"],
       "@mmh/common": ["libs/common/src/index.ts"],
       "@mmh/common/*": ["libs/common/src/*"],
+      "@mmh/entities": ["libs/entities/src/index.ts"],
+      "@mmh/entities/*": ["libs/entities/src/*"],
       "@mmh/gateway": ["apps/gateway/src/index.ts"],
       "@mmh/gateway/*": ["apps/gateway/src/*"],
       "@mmh/mailer": ["apps/mailer/src/index.ts"],
       "@mmh/mailer/*": ["apps/mailer/src/*"],
-      "@mmh/entities": ["libs/entities/src/index.ts"],
-      "@mmh/entities/*": ["libs/entities/src/*"],
       "@mmh/user": ["apps/user/src/index.ts"],
-      "@mmh/user/*": ["apps/user/src/*"]
-
+      "@mmh/user/*": ["apps/user/src/*"],
+      "@mmh/category": ["apps/category/src/index.ts"],
+      "@mmh/category/*": ["apps/category/src/*"]
     }
   },
-  "include": [
-    "libs/**/*"
-  ],
+  "include": ["libs/**/*"],
   "exclude": ["node_modules", "tmp"]
 }
