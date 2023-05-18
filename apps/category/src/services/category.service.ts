@@ -12,14 +12,6 @@ import { redisUrl } from "@mmh/common/utils/redis";
 import { EntityManager } from "@mikro-orm/postgresql";
 import {orm} from "../database/mikro-orm";
 import {AccountEntity, ProjectCategoryEntity} from '@mmh/entities'
-import {expr} from "@mikro-orm/core";
-import * as Moleculer from "moleculer";
-import MoleculerClientError = Moleculer.Errors.MoleculerClientError;
-import {AccountStatus} from "@mmh/common";
-import * as bcrypt from 'bcrypt'
-import {MailerServiceClient} from "@mmh/clients";
-import {verificationCodeGenerator} from "@mmh/common/utils/generators";
-import MoleculerServerError = Moleculer.Errors.MoleculerServerError;
 
 export default class CategoryService {
 
