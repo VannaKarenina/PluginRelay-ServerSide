@@ -28,7 +28,7 @@ export const MikroOrmConfig: Options = {
   user: DB_USER,
   password: DB_PASSWORD,
   highlighter: new SqlHighlighter(),
-  debug: process.env.NODE_ENV !== 'production',
+  debug: true,
   baseDir: process.cwd(),
   cache: { enabled: false },
   validateRequired: false,
