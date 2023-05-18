@@ -13,7 +13,6 @@ import {
 } from "@nestjs/common";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {StorageService} from "@mmh/gateway/apps/storage/storage.service";
-import * as AWS from "aws-sdk";
 import {JwtAuthGuard} from "@mmh/gateway/guards/JwtAuth.guard";
 
 @Controller({
