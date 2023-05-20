@@ -37,6 +37,7 @@ export class initial_plugin_relay extends Migration {
       table.string('favicon_path').nullable();
       table.string('description');
       table.integer('downloads').defaultTo(0);
+      table.timestamps(true,true);
     })
 
     await knex.schema.createTable('projects_scores', table => {
@@ -62,6 +63,7 @@ export class initial_plugin_relay extends Migration {
       table.string('version');
       table.string('description');
       table.string('storage');
+      table.timestamps(true, true);
     })
 
     await knex.schema.createTable('projects_tags', table => {
