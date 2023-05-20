@@ -40,6 +40,12 @@ export class ProjectsEntity {
   @Expose()
   downloads: string;
 
+  @Property({ type: 'date' })
+  created_at = new Date();
+
+  @Property({ type: 'date', onUpdate: () => new Date() })
+  updated_at = new Date();
+
   @OneToMany('ProjectsScoresEntity', 'project', {
     orphanRemoval: true,
     strategy: LoadStrategy.JOINED,
