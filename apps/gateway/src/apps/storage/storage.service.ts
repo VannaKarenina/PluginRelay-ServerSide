@@ -1,4 +1,4 @@
-import {Injectable} from "@nestjs/common";
+import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import {ServiceBroker} from "moleculer";
 import {s3} from '@mmh/gateway/configs'
 import {v4 as uuidv4} from 'uuid';
@@ -86,21 +86,69 @@ export class StorageService {
   }
 
   async getProjectAvatar(key: any, res: any) {
-    const obj = await s3.getObject({
-      Bucket: 'project.avatars',
-      Key: key
-    }).createReadStream()
-    res.set('Content-Type', 'image/jpeg');
-    return obj.pipe(res);
+    if (key) {
+      try {
+        await s3.headObject({
+          Bucket: 'project.avatars',
+          Key: key
+        }).promise()
+
+        const obj = await s3.getObject({
+          Bucket: 'project.avatars',
+          Key: key
+        }).createReadStream()
+        res.set('Content-Type', 'image/jpeg');
+        return obj.pipe(res);
+
+      } catch (e) {
+        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+      }
+    } else {
+      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    }
   }
 
   async getCategoryAvatar(key: any, res: any) {
-    const obj = await s3.getObject({
-      Bucket: 'category.avatars',
-      Key: key
-    }).createReadStream()
-    res.set('Content-Type', 'image/jpeg');
-    return obj.pipe(res);
+    if (key) {
+      try {
+        await s3.headObject({
+          Bucket: 'category.avatars',
+          Key: key
+        }).promise()
+
+        const obj = await s3.getObject({
+          Bucket: 'category.avatars',
+          Key: key
+        }).createReadStream();
+        res.set('Content-Type', 'image/jpeg');
+        return obj.pipe(res);
+
+      } catch (e) {
+        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+      }
+    } else {
+      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async isObjExist(key: string, bucket: string) {
+    try {
+      console.log(await s3.headObject({
+        Bucket: bucket,
+        Key: key
+      }).promise())
+      // Object exists
+      return true;
+    } catch (error) {
+      if (error.code === 'NotFound') {
+        // Object does not exist
+        return false;
+      } else {
+        console.error('Error checking object existence:', error);
+        // Return an appropriate value or throw an error based on your use case
+        throw error;
+      }
+    }
   }
 
 }
