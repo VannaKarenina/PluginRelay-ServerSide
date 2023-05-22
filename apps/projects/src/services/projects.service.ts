@@ -38,7 +38,7 @@ export default class ProjectsService {
     await projectCategory.projects.init();
     await account.projects.init();
 
-    if (account.projects.length > 5) throw new MoleculerClientError('The maximum number of projects has been reached');
+    if (account.projects.length > 15) throw new MoleculerClientError('The maximum number of projects has been reached');
 
     const project = new ProjectsEntity()
     project.name = name;

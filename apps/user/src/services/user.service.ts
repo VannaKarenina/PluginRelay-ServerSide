@@ -47,7 +47,12 @@ export default class UserService {
       .orWhere({ [expr('lower(email)')]: email.toLowerCase() })
       .getSingleResult();
 
-    if (account) throw new MoleculerClientError('Account with this login/email is exist', 400);
+    if (account) {
+      return {
+        code: 405,
+        message: 'Account with this login or email already exist!'
+      }
+    }
 
     const newAccount = new AccountEntity();
     newAccount.login = login;
@@ -76,7 +81,10 @@ export default class UserService {
     if (!account) throw new MoleculerServerError('Account with waiting verification status not found', 400);
 
     if (parseInt(await this.redisInstance.get(ctx.email)) != ctx.code) {
-      throw new MoleculerServerError('Invalid verification code', 400);
+      return {
+        code: 405,
+        message: 'Invalid verification code'
+      }
     }
 
     await this.redisInstance.del(ctx.email, ctx.code.toString());
@@ -85,7 +93,10 @@ export default class UserService {
 
     await this.em.flush();
 
-    return true;
+    return {
+      code: 200,
+      message: 'Confirmed'
+    };
   }
 
   async accountRecoveryInit(ctx: IAccountRecoveryInit) {
