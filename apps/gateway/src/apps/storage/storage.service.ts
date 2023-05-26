@@ -77,12 +77,26 @@ export class StorageService {
   }
 
   async getAccountAvatar(key: any, res: any) {
-    const obj = await s3.getObject({
-      Bucket: 'account.avatars',
-      Key: key
-    }).createReadStream()
-    res.set('Content-Type', 'image/jpeg');
-    return obj.pipe(res);
+    if (key) {
+      try {
+        await s3.headObject({
+          Bucket: 'account.avatars',
+          Key: key
+        }).promise()
+
+        const obj = await s3.getObject({
+          Bucket: 'account.avatars',
+          Key: key
+        }).createReadStream()
+        res.set('Content-Type', 'image/jpeg');
+        return obj.pipe(res);
+
+      } catch (e) {
+        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+      }
+    } else {
+      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    }
   }
 
   async getProjectAvatar(key: any, res: any) {
