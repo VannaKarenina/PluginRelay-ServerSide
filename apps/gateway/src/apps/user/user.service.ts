@@ -53,12 +53,15 @@ export class UserService {
 
     const account: any = await this.userServiceClient.accountLoginWithCredentials(ctx);
 
-    if (!account) throw new HttpException(
-      'Invalid authorization data LOGIN/PASSWORD',
-      HttpStatus.UNAUTHORIZED,
-    )
+    if (!account) {
+      return {
+        code: 401,
+        message: 'Unauthorized'
+      }
+    }
 
     return {
+      code: 200,
       access_token: this.jwtTokenService.sign({id: account.id, login: account.login})
     }
   }
