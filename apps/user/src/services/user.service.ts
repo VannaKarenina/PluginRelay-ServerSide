@@ -74,9 +74,13 @@ export default class UserService {
 
   async accountVerification(ctx: IAccountVerification) {
 
-    const account = await this.em.getRepository(AccountEntity).findOne({
-      email: ctx.email
-    })
+    const account = await this.em
+      .createQueryBuilder(AccountEntity)
+      .where({
+        [expr('lower(login)')]: ctx.email.toLowerCase(),
+      })
+      .orWhere({ [expr('lower(email)')]: ctx.email.toLowerCase() })
+      .getSingleResult();
 
     if (!account) throw new MoleculerServerError('Account with waiting verification status not found', 400);
 
@@ -219,9 +223,13 @@ export default class UserService {
       .orWhere({ [expr('lower(email)')]: loginOrEmail.toLowerCase() })
       .getSingleResult();
 
-    if (account.status)
-
-    return password ? bcrypt.compareSync(password, account.password) ? account : null : account;
+    if (account.status == AccountStatus.Active) {
+      return password ? bcrypt.compareSync(password, account.password) ? account : null : account;
+    } else {
+      return {
+        code: 800
+      }
+    }
   }
 
   async getAccountById(ctx: IAccountIDInterface) {
@@ -231,7 +239,7 @@ export default class UserService {
     const account = await this.em.getRepository(AccountEntity).findOne({id: id}, {populate: ['projects']});
 
     if (!account) throw new MoleculerServerError(`No account with this id [${id}]`, 400);
-
+    delete account['password'];
     return account;
 
   }
