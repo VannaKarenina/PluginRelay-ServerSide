@@ -53,7 +53,7 @@ export default class ProjectsService {
       throw new MoleculerServerError('Failed to create project', 400)
     }
 
-    return true;
+    return project.id;
 
   }
 
@@ -167,6 +167,16 @@ export default class ProjectsService {
 
   async getAllProjectsByCategory(ctx: IProjectsByCategory) {
     return await this.em.getRepository(ProjectCategoryEntity).findOne({id: ctx.cid}, {populate: ['projects']});
+  }
+
+  async adjustProjectDownload(ctx: IProjectGetById) {
+    const project = await this.em.getRepository(ProjectsEntity).findOne({id: ctx.id});
+    project.downloads ++;
+    await this.em.persistAndFlush()
+  }
+
+  async getAllByAccountId() {
+    
   }
 
 }
