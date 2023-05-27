@@ -38,7 +38,7 @@ export class ProjectsEntity {
 
   @Property({default: 0})
   @Expose()
-  downloads: string;
+  downloads: number;
 
   @Property({ type: 'date' })
   created_at = new Date();
