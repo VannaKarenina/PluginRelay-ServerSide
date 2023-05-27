@@ -49,5 +49,9 @@ export class ProjectsServiceClient extends BaseServiceClient {
     return this.call('getAllInCategory', ctx);
   }
 
+  async adjustDownload(ctx: IProjectGetById) {
+    return this.call('adjustDownload', ctx);
+  }
+
 
 }
