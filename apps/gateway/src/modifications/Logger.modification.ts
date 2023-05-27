@@ -21,7 +21,7 @@ export default class LoggerModification implements LoggerService {
    * Write a 'warn' level log.
    */
   warn(message: any, ...optionalParams: any[]) {
-    logger.warning(message);
+    logger.warn(message);
   }
 
   /**
