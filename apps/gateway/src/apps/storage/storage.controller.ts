@@ -75,6 +75,14 @@ export class StorageController {
     return this.service.getCategoryAvatar(params.key, res);
   }
 
+  @Get('versionFile')
+  async getProjectFile(
+    @Query() params: any,
+    @Res() res: Response
+  ) {
+    return this.service.donwloadProjectFile(params.key, parseInt(params.id), res);
+  }
+
 
 
 }

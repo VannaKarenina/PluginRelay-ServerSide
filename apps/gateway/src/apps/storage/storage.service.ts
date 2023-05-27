@@ -41,6 +41,19 @@ export class StorageService {
 
   async uploadFavicon(id: number, file: any) {
     const uuid = uuidv4();
+
+    const project: any = await this.projectServiceClient.getProjectById({id: id});
+    console.log(project.favicon_path);
+    if (project.favicon_path != null || project.favicon_path != "default.png") {
+      await s3.deleteObject({
+        Bucket: 'project.avatars',
+        Key: project.favicon_path
+      }, (err, data) => {
+        if (err) console.log(err)
+        else console.log(data);
+      }).promise()
+    }
+
     const upload = await s3.upload({
       Bucket: 'project.avatars',
       Key: `${uuid}.${file.originalname.split('.').pop()}`,
@@ -162,6 +175,21 @@ export class StorageService {
         // Return an appropriate value or throw an error based on your use case
         throw error;
       }
+    }
+  }
+
+  async donwloadProjectFile(key: string, pid:number, res: any) {
+    try {
+      await this.projectServiceClient.adjustDownload({id: pid})
+      const fileStream = s3.getObject({
+        Bucket: 'project.plugins',
+        Key: key,
+      }).createReadStream();
+      res.attachment(key); // Set the filename for the response
+      return fileStream.pipe(res); // Pipe the file stream to the response
+    } catch (err) {
+      // Handle any errors that occur during the file retrieval
+      res.status(500).send('Error retrieving file from S3');
     }
   }
 
