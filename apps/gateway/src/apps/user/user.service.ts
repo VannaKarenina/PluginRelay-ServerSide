@@ -62,7 +62,9 @@ export class UserService {
 
     return {
       code: 200,
-      access_token: this.jwtTokenService.sign({id: account.id, login: account.login})
+      access_token: this.jwtTokenService.sign({id: account.id, login: account.login}, {
+        expiresIn: '3600s'
+      })
     }
   }
 
