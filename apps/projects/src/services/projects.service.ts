@@ -33,12 +33,13 @@ export default class ProjectsService {
 
     const projectCategory = await this.em.getRepository(ProjectCategoryEntity).findOne({id: category})
 
-    console.log(projectCategory);
-
     await projectCategory.projects.init();
     await account.projects.init();
 
-    if (account.projects.length > 15) throw new MoleculerClientError('The maximum number of projects has been reached');
+    if (account.projects.length > 15 && account.moderation_level !> 0) return {
+      code: 802,
+      message: 'Max number of projects !'
+    }
 
     const project = new ProjectsEntity()
     project.name = name;
@@ -48,7 +49,7 @@ export default class ProjectsService {
     projectCategory.projects.add(project);
 
     try {
-      this.em.persistAndFlush(account, projectCategory);
+      await this.em.persistAndFlush(project, account, projectCategory);
     } catch (err) {
       throw new MoleculerServerError('Failed to create project', 400)
     }
@@ -166,7 +167,18 @@ export default class ProjectsService {
   }
 
   async getAllProjectsByCategory(ctx: IProjectsByCategory) {
-    return await this.em.getRepository(ProjectCategoryEntity).findOne({id: ctx.cid}, {populate: ['projects']});
+    /*return await this.em.getRepository(ProjectsEntity).createQueryBuilder('projects')
+      .where({ category_id: ctx.cid })
+      .orderBy({ id: 'ASC' })
+      .getResult();*/
+    return await this.em.getRepository(ProjectsEntity)
+      .find(
+        { category_id: ctx.cid },
+        {
+          orderBy: { id: 'ASC' },
+          populate: false,
+        }
+      );
   }
 
   async adjustProjectDownload(ctx: IProjectGetById) {
@@ -175,8 +187,19 @@ export default class ProjectsService {
     await this.em.persistAndFlush()
   }
 
-  async getAllByAccountId() {
-    
+  async getAllByAccountId(ctx: IProjectGetById) {
+    /*return await this.em.getRepository(ProjectsEntity).createQueryBuilder('project')
+      .where({ account_id: ctx.id })
+      .orderBy({ id: 'ASC' })
+      .getResult();*/
+
+    return await this.em.getRepository(ProjectsEntity)
+      .find(
+        { account_id: ctx.id },
+        {
+          orderBy: { id: 'ASC' },
+          populate: ['versions'],
+        })
   }
 
 }

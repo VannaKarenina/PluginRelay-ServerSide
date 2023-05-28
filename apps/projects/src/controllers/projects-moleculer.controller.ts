@@ -157,4 +157,13 @@ export default class ProjectsMoleculerController extends Service {
     return this.projectsService.adjustProjectDownload(ctx.params);
   }
 
+  @Action({
+    params: {
+      id: 'number'
+    }
+  })
+  async getByAccountId(ctx: Context<IProjectGetById>) {
+    return this.projectsService.getAllByAccountId(ctx.params);
+  }
+
 }

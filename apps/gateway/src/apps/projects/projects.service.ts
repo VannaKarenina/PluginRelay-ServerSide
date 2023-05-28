@@ -48,4 +48,8 @@ export class ProjectsService {
     return this.projectServiceClient.getAllByCategory(ctx);
   }
 
+  async getAllByAccountId(ctx: IProjectGetById) {
+    return this.projectServiceClient.getByAccountId(ctx);
+  }
+
 }

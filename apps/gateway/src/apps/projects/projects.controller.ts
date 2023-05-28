@@ -56,5 +56,12 @@ export class ProjectsController {
     return this.service.getByCid({cid: parseInt(cid)});
   }
 
+  @Get("projects/:cid")
+  async getByAccountId(
+    @Param('cid') cid: string
+  ) {
+    return this.service.getAllByAccountId({id: parseInt(cid)});
+  }
+
 
 }

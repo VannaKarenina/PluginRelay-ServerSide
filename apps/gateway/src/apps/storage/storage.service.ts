@@ -43,16 +43,7 @@ export class StorageService {
     const uuid = uuidv4();
 
     const project: any = await this.projectServiceClient.getProjectById({id: id});
-    console.log(project.favicon_path);
-    if (project.favicon_path != null || project.favicon_path != "default.png") {
-      await s3.deleteObject({
-        Bucket: 'project.avatars',
-        Key: project.favicon_path
-      }, (err, data) => {
-        if (err) console.log(err)
-        else console.log(data);
-      }).promise()
-    }
+
 
     const upload = await s3.upload({
       Bucket: 'project.avatars',
