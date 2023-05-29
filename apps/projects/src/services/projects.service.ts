@@ -62,6 +62,16 @@ export default class ProjectsService {
 
     const {accountId ,id, name, description, category} = ctx;
 
+    const account = await this.em.getRepository(AccountEntity).findOne({id: accountId});
+    const project = await this.em.getRepository(ProjectsEntity).findOne({id: id});
+
+    if (account.id != project.account_id) {
+      return {
+        code: 808,
+        message: 'You not owner of this project!'
+      }
+    }
+
     try {
       await this.em.transactional(async (em) => {
 
