@@ -37,6 +37,10 @@ export class ProjectsService {
     return this.projectServiceClient.deleteProject(ctx);
   }
 
+  async deleteVersion(ctx: IProjectDelete) {
+    return this.projectServiceClient.deleteVersion(ctx);
+  }
+
   async getProjectById(ctx: IProjectGetById) {
     return this.projectServiceClient.getProjectById(ctx);
   }

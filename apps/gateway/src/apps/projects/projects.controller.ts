@@ -42,6 +42,14 @@ export class ProjectsController {
     return this.service.deleteProject({id: payload.id});
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('deleteVersion')
+  async deleteVersion(
+    @Body() payload: any
+  ) {
+    return this.service.deleteVersion({id: payload.id});
+  }
+
   @Get(':pid')
   async getProjectById(
     @Param('pid') pid: string

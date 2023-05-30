@@ -3,6 +3,7 @@ import ProjectsService from "../services/projects.service";
 import {PROJECTS_SERVICE_NAME} from "../constants";
 import {Action} from "moleculer-decorators";
 import {
+  IEditVersion,
   IProjectChangeFavicon,
   IProjectCreate,
   IProjectDelete,
@@ -69,6 +70,29 @@ export default class ProjectsMoleculerController extends Service {
 
   @Action({
     params: {
+      accountId: {
+        type: "number"
+      },
+      id: {
+        type: "number"
+      },
+      name: {
+        type: "string"
+      },
+      description: {
+        type: "string"
+      },
+      version: {
+        type: "string"
+      }
+    }
+  })
+  async editVersion(ctx: Context<IEditVersion>) {
+    return this.projectsService.editVersion(ctx.params);
+  }
+
+  @Action({
+    params: {
       id: {
         type: 'number'
       },
@@ -90,6 +114,17 @@ export default class ProjectsMoleculerController extends Service {
   })
   async deleteProject(ctx: Context<IProjectDelete>) {
     return this.projectsService.deleteProject(ctx.params);
+  }
+
+  @Action({
+    params: {
+      id: {
+        type: 'number'
+      }
+    }
+  })
+  async deleteVersion(ctx: Context<IProjectDelete>) {
+    return this.projectsService.deleteVersion(ctx.params);
   }
 
   @Action({

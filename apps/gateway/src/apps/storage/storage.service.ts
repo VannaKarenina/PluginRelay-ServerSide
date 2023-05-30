@@ -62,6 +62,11 @@ export class StorageService {
   }
 
   async uploadPlugin(verid: number, file: any) {
+
+    if (file.mimetype == 'application/octet-stream') {
+      file.mimetype = 'application/java-archive'
+    }
+
     const upload = await s3.upload({
       Bucket: 'project.plugins',
       Key: file.originalname,
@@ -170,6 +175,7 @@ export class StorageService {
   }
 
   async donwloadProjectFile(key: string, pid:number, res: any) {
+    console.log({key, pid})
     try {
       await this.projectServiceClient.adjustDownload({id: pid})
       const fileStream = s3.getObject({
@@ -179,6 +185,7 @@ export class StorageService {
       res.attachment(key); // Set the filename for the response
       return fileStream.pipe(res); // Pipe the file stream to the response
     } catch (err) {
+      console.log(err)
       // Handle any errors that occur during the file retrieval
       res.status(500).send('Error retrieving file from S3');
     }

@@ -1,6 +1,7 @@
 import {EntityManager} from "@mikro-orm/postgresql";
 import {orm} from "../database/mikro-orm";
 import {
+  IEditVersion,
   IProjectChangeFavicon,
   IProjectCreate,
   IProjectDelete,
@@ -100,6 +101,48 @@ export default class ProjectsService {
 
   }
 
+  async editVersion(ctx: IEditVersion) {
+    const {accountId ,id, name, description, version} = ctx;
+
+    const vers = await this.em.getRepository(ProjectsVersionEntity).findOne({
+      id: id
+    })
+
+    const project = await this.em.getRepository(ProjectsEntity).findOne({
+      id: vers.project_id
+    })
+
+    const account = await this.em.getRepository(AccountEntity).findOne({
+      id: accountId
+    })
+
+    if (account.id != project.account_id) {
+      return {
+        code: 808,
+        message: 'You are not owner of this project'
+      }
+    }
+
+    try {
+      await this.em.transactional(async (em) => {
+        const vers = await em.getRepository(ProjectsVersionEntity).findOne({
+          id: id
+        })
+
+        vers.name = name;
+        vers.description = description;
+        vers.version = version;
+
+        await em.persistAndFlush(vers);
+      })
+    } catch (e) {
+      return {
+        code: 809,
+        message: `Version edition failed ${new Date()}`
+      }
+    }
+  }
+
   async projectFaviconChange(ctx: IProjectChangeFavicon) {
 
     const {id, favicon} = ctx;
@@ -124,6 +167,18 @@ export default class ProjectsService {
 
     try {
       await this.em.remove(project).flush();
+    } catch (error) {
+      console.log(error);
+      throw new MoleculerServerError('Failed to delete project', 902);
+    }
+  }
+
+  async deleteVersion(ctx: IProjectDelete) {
+    const ver = await this.em.getRepository(ProjectsVersionEntity)
+      .findOne({id: ctx.id});
+
+    try {
+      await this.em.remove(ver).flush();
     } catch (error) {
       console.log(error);
       throw new MoleculerServerError('Failed to delete project', 902);

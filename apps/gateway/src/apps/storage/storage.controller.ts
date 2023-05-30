@@ -80,7 +80,7 @@ export class StorageController {
     @Query() params: any,
     @Res() res: Response
   ) {
-    return this.service.donwloadProjectFile(params.key, parseInt(params.id), res);
+    return await this.service.donwloadProjectFile(params.key, parseInt(params.id), res);
   }
 
 

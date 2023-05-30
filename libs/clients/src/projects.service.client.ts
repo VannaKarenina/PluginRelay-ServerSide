@@ -33,6 +33,10 @@ export class ProjectsServiceClient extends BaseServiceClient {
     return this.call('deleteProject', ctx);
   }
 
+  async deleteVersion(ctx: IProjectDelete) {
+    return this.call('deleteVersion', ctx);
+  }
+
   async addNewVer(ctx: IProjectNewVersion) {
     return this.call('addNewVersion', ctx);
   }
