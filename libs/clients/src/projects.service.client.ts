@@ -1,6 +1,7 @@
 import BaseServiceClient from "@mmh/clients/base/base.service.client";
 import {PROJECTS_SERVICE_NAME} from "../../../apps/projects/src/constants";
 import {
+  IEditVersion, IGetVersionById,
   IProjectChangeFavicon,
   IProjectCreate,
   IProjectDelete,
@@ -37,6 +38,10 @@ export class ProjectsServiceClient extends BaseServiceClient {
     return this.call('deleteVersion', ctx);
   }
 
+  async editVersion(ctx: IEditVersion) {
+    return this.call('editVersion', ctx);
+  }
+
   async addNewVer(ctx: IProjectNewVersion) {
     return this.call('addNewVersion', ctx);
   }
@@ -59,6 +64,10 @@ export class ProjectsServiceClient extends BaseServiceClient {
 
   async getByAccountId(ctx: IProjectGetById) {
     return this.call('getByAccountId', ctx)
+  }
+
+  async getVerById(ctx: IGetVersionById) {
+    return this.call('getVersionById', ctx);
   }
 
 

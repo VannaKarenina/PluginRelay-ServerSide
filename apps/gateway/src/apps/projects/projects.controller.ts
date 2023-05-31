@@ -1,5 +1,5 @@
 import {Body, Controller, Get, Param, Post, UseGuards} from "@nestjs/common";
-import {ProjectCreateDto, ProjectEditDto, ProjectNewVerDto} from "@mmh/gateway/dto";
+import {ProjectCreateDto, ProjectEditDto, ProjectEditVersionDto, ProjectNewVerDto} from "@mmh/gateway/dto";
 import {ProjectsService} from "@mmh/gateway/apps/projects/projects.service";
 import {JwtAuthGuard} from "@mmh/gateway/guards/JwtAuth.guard";
 
@@ -50,6 +50,14 @@ export class ProjectsController {
     return this.service.deleteVersion({id: payload.id});
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('editVersion')
+  async editVersion(
+    @Body() payload: ProjectEditVersionDto
+  ) {
+    return this.service.editVersion(payload);
+  }
+
   @Get(':pid')
   async getProjectById(
     @Param('pid') pid: string
@@ -69,6 +77,13 @@ export class ProjectsController {
     @Param('cid') cid: string
   ) {
     return this.service.getAllByAccountId({id: parseInt(cid)});
+  }
+
+  @Get("version/:cid")
+  async getVerById(
+    @Param('cid') cid: string
+  ) {
+    return await this.service.getVerById({id: parseInt(cid)});
   }
 
 

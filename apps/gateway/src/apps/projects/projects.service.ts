@@ -1,5 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {
+  IEditVersion, IGetVersionById,
   IProjectChangeFavicon,
   IProjectCreate,
   IProjectDelete,
@@ -41,6 +42,10 @@ export class ProjectsService {
     return this.projectServiceClient.deleteVersion(ctx);
   }
 
+  async editVersion(ctx: IEditVersion) {
+    return this.projectServiceClient.editVersion(ctx);
+  }
+
   async getProjectById(ctx: IProjectGetById) {
     return this.projectServiceClient.getProjectById(ctx);
   }
@@ -54,6 +59,10 @@ export class ProjectsService {
 
   async getAllByAccountId(ctx: IProjectGetById) {
     return this.projectServiceClient.getByAccountId(ctx);
+  }
+
+  async getVerById(ctx: IGetVersionById) {
+    return await this.projectServiceClient.getVerById(ctx);
   }
 
 }

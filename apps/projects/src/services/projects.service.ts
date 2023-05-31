@@ -1,7 +1,7 @@
 import {EntityManager} from "@mikro-orm/postgresql";
 import {orm} from "../database/mikro-orm";
 import {
-  IEditVersion,
+  IEditVersion, IGetVersionById,
   IProjectChangeFavicon,
   IProjectCreate,
   IProjectDelete,
@@ -106,10 +106,13 @@ export default class ProjectsService {
 
     const vers = await this.em.getRepository(ProjectsVersionEntity).findOne({
       id: id
+    }, {
+      populate: ['project']
     })
 
+
     const project = await this.em.getRepository(ProjectsEntity).findOne({
-      id: vers.project_id
+      id: vers.project.id
     })
 
     const account = await this.em.getRepository(AccountEntity).findOne({
@@ -134,6 +137,7 @@ export default class ProjectsService {
         vers.version = version;
 
         await em.persistAndFlush(vers);
+        return vers.id;
       })
     } catch (e) {
       return {
@@ -265,6 +269,10 @@ export default class ProjectsService {
           orderBy: { id: 'ASC' },
           populate: ['versions'],
         })
+  }
+
+  async getVersionById(ctx: IGetVersionById) {
+    return await this.em.getRepository(ProjectsVersionEntity).findOne({id: ctx.id});
   }
 
 }

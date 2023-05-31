@@ -67,6 +67,15 @@ export class StorageService {
       file.mimetype = 'application/java-archive'
     }
 
+    const version: any = await this.projectServiceClient.getVerById({id: verid});
+
+    if (version.storage != null) {
+      await s3.deleteObject({
+        Bucket: 'project.plugins',
+        Key: version.storage,
+      }).promise();
+    }
+
     const upload = await s3.upload({
       Bucket: 'project.plugins',
       Key: file.originalname,

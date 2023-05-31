@@ -3,7 +3,7 @@ import ProjectsService from "../services/projects.service";
 import {PROJECTS_SERVICE_NAME} from "../constants";
 import {Action} from "moleculer-decorators";
 import {
-  IEditVersion,
+  IEditVersion, IGetVersionById,
   IProjectChangeFavicon,
   IProjectCreate,
   IProjectDelete,
@@ -201,4 +201,12 @@ export default class ProjectsMoleculerController extends Service {
     return this.projectsService.getAllByAccountId(ctx.params);
   }
 
+  @Action({
+    params: {
+      id: "number"
+    }
+  })
+  async getVersionById(ctx: Context<IGetVersionById>) {
+    return await this.projectsService.getVersionById(ctx.params);
+  }
 }
