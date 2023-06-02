@@ -3,7 +3,7 @@ import {ServiceBroker} from "moleculer";
 import {s3} from '@mmh/gateway/configs'
 import {v4 as uuidv4} from 'uuid';
 import {MoleculerProvider} from "@mmh/gateway/providers";
-import {UserServiceClient} from "@mmh/clients";
+import {CategoryServiceClient, UserServiceClient} from "@mmh/clients";
 import {ProjectsServiceClient} from "@mmh/clients/projects.service.client";
 
 @Injectable()
@@ -12,6 +12,7 @@ export class StorageService {
   protected broker: ServiceBroker;
   protected userServiceClient: UserServiceClient;
   protected projectServiceClient: ProjectsServiceClient;
+  protected categoryServiceClient: CategoryServiceClient;
 
   constructor(
     private readonly moleculerProvider: MoleculerProvider,
@@ -19,6 +20,7 @@ export class StorageService {
     this.broker = this.moleculerProvider.getBroker();
     this.userServiceClient = new UserServiceClient(this.broker);
     this.projectServiceClient = new ProjectsServiceClient(this.broker);
+    this.categoryServiceClient = new CategoryServiceClient(this.broker);
   }
 
   async uploadAvatar(id: number, file: any) {
@@ -54,6 +56,26 @@ export class StorageService {
 
     try {
       await this.projectServiceClient.projectFaviconChange({id: id, favicon: upload.Key})
+    } catch (e) {
+      if (e) return false;
+    }
+
+    return true;
+  }
+
+  async uploadGameImage(id: number, file: any) {
+
+    const uuid = uuidv4();
+
+    const upload = await s3.upload({
+      Bucket: 'category.avatars',
+      Key: `${uuid}.${file.originalname.split('.').pop()}`,
+      Body: file.buffer,
+      ContentType: file.mimetype
+    }).promise();
+
+    try {
+      await this.categoryServiceClient.changeImage({id: id, path: upload.Key})
     } catch (e) {
       if (e) return false;
     }
@@ -142,6 +164,7 @@ export class StorageService {
 
   async getCategoryAvatar(key: any, res: any) {
     if (key) {
+      console.log(key)
       try {
         await s3.headObject({
           Bucket: 'category.avatars',

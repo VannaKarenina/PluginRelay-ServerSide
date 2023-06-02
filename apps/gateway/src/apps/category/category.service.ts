@@ -2,7 +2,7 @@ import {ServiceBroker} from "moleculer";
 import {MoleculerProvider} from "@mmh/gateway/providers";
 import {CategoryServiceClient} from "@mmh/clients";
 import {Injectable} from "@nestjs/common";
-import {ICategoryById} from "@mmh/common";
+import {ICategoryById, ICategoryImageInterface, ICreateCategory} from "@mmh/common";
 
 @Injectable()
 export class CategoryService {
@@ -23,6 +23,18 @@ export class CategoryService {
 
   async getById(ctx: ICategoryById) {
     return this.client.getCategoryById(ctx);
+  }
+
+  async createCategory(ctx: ICreateCategory) {
+    return this.client.createCategory(ctx);
+  }
+
+  async changeImage(ctx: ICategoryImageInterface) {
+    return this.client.changeImage(ctx);
+  }
+
+  async delete(ctx: ICategoryById) {
+    return this.client.delete(ctx);
   }
 
 }

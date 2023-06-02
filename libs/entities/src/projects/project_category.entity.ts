@@ -1,4 +1,4 @@
-import {Collection, Entity, LoadStrategy, OneToMany, PrimaryKey, Property} from "@mikro-orm/core";
+import {Cascade, Collection, Entity, LoadStrategy, OneToMany, PrimaryKey, Property} from "@mikro-orm/core";
 import {Exclude, Expose, Transform} from "class-transformer";
 import {ProjectsEntity} from "@mmh/entities/projects/projects.entity";
 
@@ -28,6 +28,7 @@ export class ProjectCategoryEntity {
     orphanRemoval: true,
     strategy: LoadStrategy.JOINED,
     mappedBy: 'category',
+    cascade: [Cascade.ALL]
   })
   @Expose({groups: ['list']})
   @Transform(

@@ -51,6 +51,16 @@ export class StorageController {
     return  this.service.uploadFavicon(parseInt(payload.id) ,file);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('uploadGameImage')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadGameImage(
+    @Request() req: any,
+    @Body() payload: any,
+    @UploadedFile() file) {
+    return  this.service.uploadGameImage(parseInt(payload.id) ,file);
+  }
+
   @Get('getAccountImage')
   async getAccountImage(
     @Query() params: any,

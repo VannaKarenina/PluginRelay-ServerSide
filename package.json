@@ -7,7 +7,7 @@
     "build": "dotenv -e .env nx build",
     "test": "nx test",
     "migration": "ts-node ./migrations/migrate.script.ts",
-    "all": "nx run-many --target=serve --all --maxParallel=100 "
+    "all": "nx run-many --target=serve --maxParallel=5 --projects=\"gateway,projects,category,user,mailer\""
   },
   "private": true,
   "dependencies": {
