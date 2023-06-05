@@ -115,10 +115,20 @@ export default class UserService {
       .orWhere({ [expr('lower(email)')]: loginOrEmail.toLowerCase() })
       .getSingleResult();
 
-    if (!account) throw new MoleculerClientError('Account with this login/email not found', 400);
+    if (!account) {
+      return {
+        code: 805,
+        message: 'Account with this login or email not found !'
+      }
+    }
 
-    if (account.status == AccountStatus.Pending || account.status == AccountStatus.Suspended)
-      throw new MoleculerClientError('This account currently suspended or not verified email', 400);
+    if (account.status == AccountStatus.Pending || account.status == AccountStatus.Suspended) {
+      return {
+        code: 805,
+        message: 'Account currently suspended or not verified !'
+      }
+    }
+
 
     account.status = AccountStatus.RecoveryInit;
 
@@ -129,10 +139,18 @@ export default class UserService {
     try {
       await this.emailServiceClient.sendRecoveryCode({email: account.email, code: code});
     } catch (Error: any) {
-      if (Error) throw new MoleculerServerError(`Something went wrong while sending verification message: \n ${Error}`, 400);
+      if (Error) {
+        return {
+          code: 805,
+          message: "Internal service error. CODE: MAILER"
+        }
+      }
     }
 
-    return true;
+    return {
+      code: 802,
+      message: 'Verification message sent !'
+    };
 
   }
 
@@ -148,8 +166,12 @@ export default class UserService {
       .orWhere({ [expr('lower(email)')]: loginOrEmail.toLowerCase() })
       .getSingleResult();
 
-    if (parseInt(await this.redisInstance.get(account.email)) != code)
-      throw new MoleculerClientError('Incorrect recovery code');
+    if (parseInt(await this.redisInstance.get(account.email)) != code) {
+      return {
+        code: 805,
+        message: 'Incorrect recovery code !'
+      }
+    }
 
     account.status = AccountStatus.RecoveryConfirmed;
 
@@ -162,6 +184,7 @@ export default class UserService {
     await this.em.flush();
 
     return {
+      code: 802,
       signature: signature
     };
 
@@ -179,8 +202,12 @@ export default class UserService {
       .orWhere({ [expr('lower(email)')]: loginOrEmail.toLowerCase() })
       .getSingleResult();
 
-    if (await this.redisInstance.get(account.email) != signature.toString())
-      throw new MoleculerClientError("Signature error. Report this to support", 400);
+    if (await this.redisInstance.get(account.email) != signature.toString()) {
+      return {
+        code: 805,
+        message: 'Incorrect signatire data. Report this to operatorша '
+      }
+    }
 
     if (account.status != AccountStatus.RecoveryConfirmed)
       throw new MoleculerClientError("Account recovery not confirmed", 400)
@@ -190,7 +217,9 @@ export default class UserService {
 
     await this.em.flush();
 
-    return true;
+    return {
+      code: 802
+    };
 
   }
 
@@ -222,6 +251,13 @@ export default class UserService {
       })
       .orWhere({ [expr('lower(email)')]: loginOrEmail.toLowerCase() })
       .getSingleResult();
+
+    if (!account) {
+      return {
+        code: 808,
+        message: 'Account with this login or email not found !'
+      }
+    }
 
     if (account.status == AccountStatus.Active) {
       return password ? bcrypt.compareSync(password, account.password) ? account : null : account;

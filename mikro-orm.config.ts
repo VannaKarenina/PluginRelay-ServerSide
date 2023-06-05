@@ -13,7 +13,7 @@ const MikroOrmConfig: Options = {
   entities: [],
   dbName: 'plugin_relay',
   host: 'localhost',
-  port: 5432,
+  port: 6789,
   user: 'postgres',
   password: 'vanna',
   highlighter: new SqlHighlighter(),

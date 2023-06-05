@@ -19,35 +19,35 @@ export class UserServiceClient extends BaseServiceClient {
   }
 
   async createAccount(ctx: INewAccount) {
-    return this.call('createAccount', ctx);
+    return await this.call('createAccount', ctx);
   }
 
   async accountVerification(ctx: IAccountVerification) {
-    return this.call('accountVerification', ctx);
+    return await this.call('accountVerification', ctx);
   }
 
   async accountRecoveryInit(ctx: IAccountRecoveryInit) {
-    return this.call('accountRecoveryInit', ctx);
+    return await this.call('accountRecoveryInit', ctx);
   }
 
   async accountRecoveryConfirm(ctx: IAccountRecoveryConfirm) {
-    return this.call('accountRecoveryConfirm', ctx);
+    return await this.call('accountRecoveryConfirm', ctx);
   }
 
   async accountPasswordChange(ctx: IAccountPasswordChange) {
-    return this.call('accountPasswordChange', ctx);
+    return await this.call('accountPasswordChange', ctx);
   }
 
   async accountUpdateAvatar(ctx: IAccountChangeAvatar) {
-    return this.call('accountChangeAvatar', ctx);
+    return await this.call('accountChangeAvatar', ctx);
   }
 
   async accountLoginWithCredentials(ctx: IAccountLoginWithCredentials) {
-    return this.call('accountLoginWithCredentials', ctx);
+    return await this.call('accountLoginWithCredentials', ctx);
   }
 
   async getAccountById(ctx: IAccountIDInterface) {
-    return this.call('getAccountById', ctx);
+    return await this.call('getAccountById', ctx);
   }
 
 }

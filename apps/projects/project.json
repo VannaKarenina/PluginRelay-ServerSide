@@ -9,7 +9,8 @@
       "options": {
         "outputPath": "dist/apps/projects",
         "main": "apps/projects/src/main.ts",
-        "tsConfig": "apps/projects/tsconfig.app.json"
+        "tsConfig": "apps/projects/tsconfig.app.json",
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {

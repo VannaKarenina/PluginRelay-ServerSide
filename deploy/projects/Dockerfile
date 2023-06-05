@@ -2,7 +2,7 @@ FROM node:lts-alpine
 
 WORKDIR /app
 
-COPY ./dist/apps/user .
+COPY ./dist/apps/projects .
 
 COPY package-lock.json ./
 

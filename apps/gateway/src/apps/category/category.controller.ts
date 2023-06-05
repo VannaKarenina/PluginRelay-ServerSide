@@ -39,7 +39,7 @@ export class CategoryController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':id')
+  @Get('delete/:id')
   async delete(
       @Param('id') id: string
   ) {

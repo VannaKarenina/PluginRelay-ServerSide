@@ -1,0 +1,26 @@
+FROM node:lts-alpine
+
+WORKDIR /app
+
+COPY ./dist/apps/gateway .
+
+COPY package-lock.json ./
+
+ENV DB_HOST pg
+ENV DB_PORT 5432
+ENV DB_PASSWORD vanna
+ENV DB_USER postgres
+ENV DB_DATABASE plugin_relay
+ENV REDIS_HOST redis
+ENV REDIS_PORT 6379
+ENV JWT_SECRET JmLOD5DRO66HZDDlO3och5SdRHSh7cEXy9Dt9Pfk4uXGtSFFK5vemlVbLb9f
+ENV JWT_TIMOUT 600
+ENV AWS_KEYID 8hTIRGTgjSsznWf0
+ENV AWS_KEY k6DHuxS4GUibgJoYis2ZgmPm2FKpJBU8
+ENV AWS_ENDPOINT 'minio1:9000'
+
+RUN npm ci
+
+EXPOSE 3890
+
+CMD node ./main.js

@@ -1,0 +1,23 @@
+version: '3'
+services:
+  user:
+    build:
+      context: ./
+      dockerfile: deploy/user/Dockerfile
+  mailer:
+    build:
+      context: ./
+      dockerfile: deploy/mailer/Dockerfile
+  category:
+    build:
+      context: ./
+      dockerfile: deploy/category/Dockerfile
+  projects:
+    build:
+      context: ./
+      dockerfile: deploy/projects/Dockerfile
+
+networks:
+  default:
+    external:
+      name: relay
