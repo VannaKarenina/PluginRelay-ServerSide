@@ -16,6 +16,12 @@ services:
     build:
       context: ./
       dockerfile: deploy/projects/Dockerfile
+  gateway:
+    build:
+      context: ./
+      dockerfile: deploy/gateway/Dockerfile
+    ports:
+      - "3890:3890"
 
 networks:
   default:

@@ -132,6 +132,7 @@ export class StorageService {
         return obj.pipe(res);
 
       } catch (e) {
+        console.log(e)
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       }
     } else {

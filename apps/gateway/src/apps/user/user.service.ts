@@ -53,18 +53,31 @@ export class UserService {
 
     const account: any = await this.userServiceClient.accountLoginWithCredentials(ctx);
 
-    if (!account) {
+    if (account == null) {
       return {
-        code: 401,
-        message: 'Unauthorized'
+        code: 801,
+        message: 'Wrong password'
       }
-    }
+    } else {
+      if (account.code == 800) {
+        return {
+          code: 800
+        }
+      }
 
-    return {
-      code: 200,
-      access_token: this.jwtTokenService.sign({id: account.id, login: account.login}, {
-        expiresIn: '3600s'
-      })
+      if (account.code != 808) {
+        return {
+          code: 200,
+          access_token: this.jwtTokenService.sign({id: account.id, login: account.login}, {
+            expiresIn: '3600s'
+          })
+        }
+      } else {
+        return {
+          code: 801,
+          message: 'There is no account with this credentials'
+        }
+      }
     }
   }
 

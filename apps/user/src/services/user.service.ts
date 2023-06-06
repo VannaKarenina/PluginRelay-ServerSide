@@ -252,18 +252,18 @@ export default class UserService {
       .orWhere({ [expr('lower(email)')]: loginOrEmail.toLowerCase() })
       .getSingleResult();
 
-    if (!account) {
+    if (account == null) {
       return {
         code: 808,
         message: 'Account with this login or email not found !'
       }
-    }
-
-    if (account.status == AccountStatus.Active) {
-      return password ? bcrypt.compareSync(password, account.password) ? account : null : account;
     } else {
-      return {
-        code: 800
+      if (account.status == AccountStatus.Active) {
+        return password ? bcrypt.compareSync(password, account.password) ? account : null : account;
+      } else {
+        return {
+          code: 800
+        }
       }
     }
   }
