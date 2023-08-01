@@ -1,5 +1,4 @@
 <h1 align="center">
-  <img src="https://raw.githubusercontent.com/VannaKarenina/portfolio-nuxt3/master/.github/images/img.png"  alt=""/>
   <br>PluginRelay Server<br>
 </h1>
 
